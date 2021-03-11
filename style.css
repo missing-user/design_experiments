@@ -1,0 +1,67 @@
+body {
+  font-size: 200%;
+}
+
+h1 {
+  top: 10vh;
+  position: -webkit-sticky;
+  position: sticky;
+  height: 45vh;
+  margin: 0;
+  /* cool gradient background clip */
+  background: #12c2e9;
+  background: linear-gradient(45deg, #12c2e9, #c471ed, #f64f59);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+h3 {
+  position: -webkit-sticky;
+  position: sticky;
+  margin: 0;
+  /* cool gradient background clip */
+  background: #12c2e9;
+  background: linear-gradient(45deg, #12c2e9, #c471ed, #f64f59);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+#one {
+  top: 10vh;
+  height: 50vh;
+}
+
+#two {
+  top: 15vh;
+  height: 45vh;
+}
+
+#three {
+  top: 20vh;
+  height: 40vh;
+}
+
+#four {
+  top: 25vh;
+  height: 35vh;
+}
+
+.title {
+  position: -webkit-sticky;
+  position: sticky;
+  height: 50px;
+}
+
+.title {
+  top: 0;
+  font: 50px/60px "Crimson Text";
+  margin: 0;
+}
