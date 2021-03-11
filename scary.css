@@ -6,7 +6,6 @@ h2 {
   text-align: center;
   margin: 0rem 1rem;
   top: 20vh;
-  width: 100%;
   font-family: 'Finger Paint', cursive;
   font-size: 4rem;
 }
@@ -93,5 +92,4 @@ h2 {
   background: url(teeth.svg);
   background-size: cover;
   height: 50vh;
-  width: 100vw;
 }
