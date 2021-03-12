@@ -17,6 +17,7 @@
       font-size: 150%;
       background-color: #fff9ca;
       color: #5300d9;
+      text-align: center;
     }
 
     a {
@@ -25,7 +26,7 @@
 
     h1 {
       color: white;
-      text-align: center;
+      z-index: 100;
       margin: 0;
       top: 5rem;
       position: absolute;
@@ -33,7 +34,7 @@
     }
 
     #heroCont {
-      height: 400vh;
+      height: calc(var(--vh, 1vh) * 400);
       background: #000;
     }
 
@@ -43,13 +44,17 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
       top: 0;
     }
 
     canvas {
       max-width: 100vw;
-      max-height: 100vh;
+      max-height: calc(var(--vh, 1vh) * 100);
+    }
+
+    .cta {
+      height: calc(var(--vh, 1vh) * 100);
     }
   </style>
 </head>
@@ -61,14 +66,46 @@
       <canvas id="heroCanv"></canvas>
     </div>
   </div>
-  <div style="height: 100vh; text-align: center;">
+  <div class="cta">
     <div style="height: 10rem;"></div>
     <h2>Cool animation, isn't it?</h2>
-    <p>If you want me to do one for you, hit me up at <a href="">animation@master.com</a></p>
+    <p>If you want me to do one for you, hit me up at <a href="">animation@master.com</a> or on social media</p>
+    <div>
+      <a href="#"> <svg width="100" height="65" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7ZM9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12Z"
+            fill="currentColor" />
+          <path
+            d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z"
+            fill="currentColor" />
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M5 1C2.79086 1 1 2.79086 1 5V19C1 21.2091 2.79086 23 5 23H19C21.2091 23 23 21.2091 23 19V5C23 2.79086 21.2091 1 19 1H5ZM19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+            fill="currentColor" />
+
+        </svg></a>
+      <a href="#"> <svg width="100" height="65" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M8 3C9.10457 3 10 3.89543 10 5V8H16C17.1046 8 18 8.89543 18 10C18 11.1046 17.1046 12 16 12H10V14C10 15.6569 11.3431 17 13 17H16C17.1046 17 18 17.8954 18 19C18 20.1046 17.1046 21 16 21H13C9.13401 21 6 17.866 6 14V5C6 3.89543 6.89543 3 8 3Z"
+            fill="currentColor" />
+        </svg></a>
+      <a href="#">
+        <svg width="100" height="65" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path opacity="0.5"
+            d="M21 10C21 13.3137 18.3137 16 15 16C11.6863 16 9 13.3137 9 10C9 6.68629 11.6863 4 15 4C18.3137 4 21 6.68629 21 10Z"
+            fill="currentColor" />
+          <path d="M3 4H7V20H3V4Z" fill="currentColor" />
+        </svg></a>
+    </div>
   </div>
 </body>
 
 <script>
+  // First we get the viewport height and multiply it by 1% to get a value for a vh unit
+  let vh = window.innerHeight * 0.01;
+  // Then we set the value in the --vh custom property to the root of the document
+  document.documentElement.style.setProperty('--vh', `${vh}px`)
+
+
   const html = document.documentElement;
   const animCont = document.getElementById("heroCont");
   const canvas = document.getElementById("heroCanv");
