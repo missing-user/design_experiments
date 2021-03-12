@@ -6,15 +6,34 @@
   <meta name="theme-color" content="#000">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
   <title>Fancy</title>
   <style>
     html,
     body {
       margin: 0;
+      font-family: 'Reenie Beanie', cursive;
+      font-size: 150%;
+      background-color: #cfcbab;
+      color: #5300d9;
+    }
+
+    a {
+      color: #f73c03;
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+      margin: 0;
+      top: 5rem;
+      position: absolute;
+      width: 100%;
     }
 
     #heroCont {
-      height: 500vh;
+      height: 400vh;
       background: #000;
     }
 
@@ -37,13 +56,14 @@
 
 <body>
   <div id="heroCont">
+    <h1>Hi, I'm Alice</h1>
     <div class="canvCont">
       <canvas id="heroCanv"></canvas>
     </div>
   </div>
   <div style="height: 100vh; text-align: center;">
     <div style="height: 10rem;"></div>
-    <h1>Cool animation, isn't it?</h1>
+    <h2>Cool animation, isn't it?</h2>
     <p>If you want me to do one for you, hit me up at <a href="">animation@master.com</a></p>
   </div>
 </body>
@@ -54,11 +74,11 @@
   const canvas = document.getElementById("heroCanv");
   const context = canvas.getContext("2d");
 
-  const frameCount = 20;
+  const frameCount = 65;
   const currentFrame = index => (
     //  const frameCount = 148;
     // `https://www.apple.com/105/media/us/airpods-pro/2019/1299e2f5_9206_4470_b28e_08307a42f19b/anim/sequence/large/01-hero-lightpass/${index.toString().padStart(4, '0')}.jpg`
-    `https://jurasic-park.de/design_experiments/frames/frame_${index.toString().padStart(2, '0')}s.png`
+    `https://jurasic-park.de/design_experiments/frames/ezgif-frame-${index.toString().padStart(3, '0')}_min.png`
   )
 
   const preloadImages = () => {
