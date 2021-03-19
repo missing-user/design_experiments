@@ -1,5 +1,7 @@
 html, body {
-  margin: 0;
+  max-width: 1000px;
+  margin: auto;
+  background-color: black;
 }
 
 h2 {
