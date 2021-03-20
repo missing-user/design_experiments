@@ -52,10 +52,12 @@ a:hover, a:focus {
   .headerBackdrop {
     position: absolute;
     left: 0;
-    writing-mode: vertical-lr;
+    writing-mode: vertical-rl;
     background-position: 2em 0;
     background-size: 5.5em;
     width: initial;
+    text-align: end;
+    transform: rotate(180deg) translate(1.5em, 0);
   }
   h1 {
     font-size: 4em;
