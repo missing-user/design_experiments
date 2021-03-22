@@ -48,6 +48,12 @@ a:hover, a:focus {
   background-size: 3px 90%;
 }
 
+@media(prefers-color-scheme: dark) {
+  body{
+    font-weight: 600;
+  }
+}
+
 @media(min-width: 1000px) {
   .headerBackdrop {
     position: absolute;
