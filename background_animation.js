@@ -62,10 +62,15 @@ function animate(timestamp) {
 }
 
 //expects input values from -0.5 to 0.5
+let prevY = 0, prevX = 0
 function setHighFrequency(x, y) {
   //randomness = x
   xSpeed = x * 8
   ySpeed = y * 4
+  waveOffset += (y - prevY) * 8
+  smallOffset += (x - prevX) * 12
+  prevX = x
+  prevY = y
 }
 let tiltOverride = false
 function mouseHandler(e) {
@@ -86,13 +91,13 @@ function deviceOrientationHandler(e) {
     initialTiltLR = e.gamma
   if (!initialTiltFB)
     initialTiltFB = e.beta
-  tiltOverride = true
+  tiltOverride = !!initialTiltLR
   var tiltLR = initialTiltLR - e.gamma;
   var tiltFB = initialTiltFB - e.beta;
   tiltFB = (tiltFB + 90) % 180 - 90
   tiltLR = (tiltLR + 90) % 180 - 90
 
-  setHighFrequency(tiltLR / 180, tiltFB / 180)
+  setHighFrequency(tiltLR / 90, tiltFB / 90)
 }
 
 
