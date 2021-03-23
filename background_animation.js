@@ -1,8 +1,7 @@
 let c = document.getElementById('backgroundCanvas')
 let ctx = backgroundCanvas.getContext('2d')
 var cH, cW
-let yStretch = .2, xStretch = 1 / 6, waveOffset = 0, smallOffset = 0
-
+var randomMatrix
 function setCanvasDimensions() {
   cW = window.innerWidth;
   cH = window.innerHeight;
@@ -12,42 +11,68 @@ function setCanvasDimensions() {
 
   ctx.fillStyle = '#00ff6a'
   ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--underline-color')
+
+  randomMatrix = makeRandomMatrix()
 }
-setCanvasDimensions()
 
-let start = null
+function makeRandomMatrix() {
+  let matrix = {}
+  for (let xi = -cW / 2; xi < cW / 2; xi += spacing) {
+    matrix[xi] = {}
+    for (let yi = 0; yi < 1.8 * cH; yi += spacing)
+      matrix[xi][yi] = Math.random() - 0.5
+  }
+  return matrix
+}
+
+let lastTime = null, time = 0
+const minRandomness = 0.05
+let spacing = 15, randomness = minRandomness
+let smallStretch = 30, waveOffset = 0, smallOffset = 0
+let xSpeed = 1, ySpeed = 1
+
 function animate(timestamp) {
-  if (!start) start = timestamp;
-  let time = (timestamp - start) / 1000;
+  let dt = (timestamp - lastTime) / 1000;
+  lastTime = timestamp;
   ctx.clearRect(0, 0, c.width, c.height)
+  //increase timesteps (according to xy speed)
+  time += dt
+  smallOffset += dt * xSpeed
+  waveOffset += dt * ySpeed
 
-  let spacing = 15
+  //decrease random effect after click
+  randomness += (minRandomness - randomness) * dt * 8
+
   for (let xi = -cW / 2; xi < cW / 2; xi += spacing) {
     for (let yi = 0; yi < 1.8 * cH; yi += spacing) {
-      let x = xi
-      let dy = spacing * 2 * Math.cos(time + yi / spacing / 10 + waveOffset) //long waves
-      dy += 5 * Math.cos(time * smallOffset + xi * xStretch + yi * yStretch) //high frequency variation
+      let x = xi + randomness * spacing * randomMatrix[xi][yi] //random offset on click
+      let dy = spacing * 2 * Math.cos(yi / spacing / 10 + waveOffset) //long waves
+      dy += 5 * Math.cos(time
+        + Math.sin(smallOffset + xi / smallStretch)
+        + Math.cos(smallOffset + yi / smallStretch)) //high frequency variation
       dy *= (yi / cH + 1) //perspective scale
       let y = yi / 2 + cH / 3 + dy
       x *= (yi / cH + 1)
-      let dotSize = (yi / cH + .2) * 5
+      let dotSize = (yi / cH + .1) * spacing / 3
       ctx.fillRect(x + cW / 2, y, dotSize, dotSize)
 
     }
   }
   requestAnimationFrame(animate)
 }
-requestAnimationFrame(animate)
 
+//expects input values from -0.5 to 0.5
 function setHighFrequency(x, y) {
-  smallOffset = 8 * x - 4
-  waveOffset = Math.PI * 2 * y
+  //randomness = x
+  xSpeed = x * 8
+  ySpeed = y * 4
 }
-
+let tiltOverride = false
 function mouseHandler(e) {
-  setHighFrequency(e.clientX / window.innerHeight / 10, e.clientY / window.innerHeight)
+  if (!tiltOverride)
+    setHighFrequency(0.5 - e.clientX / window.innerWidth, 0.5 - e.clientY / window.innerHeight)
 }
-
+window.onclick = () => { randomness = 5 }
 window.onresize = setCanvasDimensions
 window.onmousemove = mouseHandler
 
@@ -55,9 +80,21 @@ if ('DeviceOrientationEvent' in window) {
   window.addEventListener('deviceorientation', deviceOrientationHandler, false);
 }
 
-function deviceOrientationHandler(eventData) {
-  var tiltLR = eventData.gamma;
-  var tiltFB = eventData.beta;
+var initialTiltLR, initialTiltFB
+function deviceOrientationHandler(e) {
+  if (!initialTiltLR)
+    initialTiltLR = e.gamma
+  if (!initialTiltFB)
+    initialTiltFB = e.beta
+  tiltOverride = true
+  var tiltLR = initialTiltLR - e.gamma;
+  var tiltFB = initialTiltFB - e.beta;
+  tiltFB = (tiltFB + 90) % 180 - 90
+  tiltLR = (tiltLR + 90) % 180 - 90
 
-  setHighFrequency(0, tiltLR / 90 + tiltFB / 90)
+  setHighFrequency(tiltLR / 180, tiltFB / 180)
 }
+
+
+requestAnimationFrame(animate)
+setCanvasDimensions()
