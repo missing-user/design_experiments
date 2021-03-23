@@ -59,5 +59,5 @@ function deviceOrientationHandler(eventData) {
   var tiltLR = eventData.gamma;
   var tiltFB = eventData.beta;
 
-  setHighFrequency(0, tiltLR / 90)
+  setHighFrequency(0, tiltLR / 90 + tiltFB / 90)
 }

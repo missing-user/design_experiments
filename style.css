@@ -74,8 +74,8 @@ a:hover, a:focus {
   }
   .headerBackdrop {
     writing-mode: vertical-rl;
-    background-position: 2em 0;
-    background-size: 5.5em;
+    background-position: 2.2em 0;
+    background-size: 6em;
     width: initial;
     text-align: end;
     transform: rotate(180deg) translate(1.5em, 0);
