@@ -11,6 +11,11 @@ body {
   padding: 1rem;
 }
 
+section {
+  display: flex;
+  flex-direction: column;
+}
+
 .headerBackdrop {
   background-color: var(--underline-color);
   background: linear-gradient(90deg, var(--underline-color), var(--underline-color));
@@ -25,6 +30,7 @@ body {
 h1 {
   font-size: 2.2em;
   margin-top: 0;
+  margin-bottom: 0;
   letter-spacing: 15px;
   line-height: 90%;
   hyphens: auto;
@@ -48,16 +54,25 @@ a:hover, a:focus {
   background-size: 3px 90%;
 }
 
+.homeLink {
+  margin-bottom: 2rem;
+}
+
 @media(prefers-color-scheme: dark) {
-  body{
+  body {
     font-weight: 600;
+  }
+  :root {
+    --underline-color: #00b84c;
   }
 }
 
 @media(min-width: 1000px) {
+  section {
+    flex-direction: row;
+    line-height: 1.6em;
+  }
   .headerBackdrop {
-    position: absolute;
-    left: 0;
     writing-mode: vertical-rl;
     background-position: 2em 0;
     background-size: 5.5em;
@@ -68,7 +83,10 @@ a:hover, a:focus {
   h1 {
     font-size: 4em;
   }
-  ul {
-    padding-left: 12em;
+  h2 {
+    font-size: 3em;
+  }
+  .homeLink {
+    margin-left: 12rem;
   }
 }

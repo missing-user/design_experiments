@@ -10,8 +10,9 @@ https://missing-user.github.io/design_experiments/
 ### Prototype for an animation portfolio website
 https://missing-user.github.io/design_experiments/scrollAnimation
 
-### CSS Menu animation
-https://missing-user.github.io/design_experiments/menu
+### JS background animation
+It reacts to mousemovements on desktop and to tilt on mobile!
+https://missing-user.github.io/design_experiments/background_animation
 
 ### Scary teeth
 Simple scroll animation experimenting with SVG backgrounds
