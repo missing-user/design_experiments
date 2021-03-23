@@ -55,12 +55,9 @@ if ('DeviceOrientationEvent' in window) {
   window.addEventListener('deviceorientation', deviceOrientationHandler, false);
 }
 
-var initialTilt
 function deviceOrientationHandler(eventData) {
-  if (!initialTilt)
-    initialTilt = eventData.gamma
-  var tiltLR = eventData.gamma - initialTilt;
+  var tiltLR = eventData.gamma;
   var tiltFB = eventData.beta;
 
-  setHighFrequency(tiltLR / 360, tiltFB / 90)
+  setHighFrequency(0, tiltLR / 90)
 }
