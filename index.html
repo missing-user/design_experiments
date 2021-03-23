@@ -21,6 +21,10 @@
     <li>Just a simple <a href="menu">CSS menu animation</a></li>
  </ul>
 </body>
+<script>
+let style = getComputedStyle(document.getElementsByTagName("li")[0])
+document.documentElement.style.setProperty('--underline-color', style.color)
+</script>
 <!--
 <script>
   let possibleColors = ['#00ff6a', '#ffeb3b', '#5de9ff', '#ff4040']
