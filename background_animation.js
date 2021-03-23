@@ -9,7 +9,7 @@ function setCanvasDimensions() {
   c.height = cH * window.devicePixelRatio;
   ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
-  ctx.fillStyle = '#00ff6a'
+  ctx.fillStyle = '#00b84c'
   ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--underline-color')
 
   randomMatrix = makeRandomMatrix()
