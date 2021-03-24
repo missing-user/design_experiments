@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stopwatch</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .watchContainer {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 16px;
+      max-width: 700px;
+      margin: 2em auto;
+    }
+
+    hr {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-bottom: none;
+    }
+
+    button {
+      margin-top: 12px;
+      font-size: 1.2em;
+      margin-right: .5em;
+    }
+
+    li {
+      padding-left: 2ch;
+    }
+
+    #roundsCont {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="watchContainer">
+
+    <h1>Stopwatch </h1>
+    <h2>
+      <span id="timeDisplay">00 : 00 : 00 : 00</span>
+    </h2>
+    <hr>
+    <button onclick="start()" id="start">Start</button>
+    <button onclick="round()">Round</button>
+    <button onclick="reset()">Reset</button>
+    <div id="roundsCont" style="display: none;">
+      <hr>
+      <h2>
+        <ol id="rounds">
+        </ol>
+      </h2>
+    </div>
+  </div>
+
+</body>
+<script>
+  var timeDisplay = document.getElementById('timeDisplay')
+  var startTime, updatedTime, difference, tInterval, lastRound
+  function start() {
+    if (!tInterval) {
+      lastRound = startTime = new Date().getTime()
+      tInterval = setInterval(getShowTime, 10)
+      document.getElementById('start').textContent = 'Stop'
+    } else {
+      clearInterval(tInterval)
+    }
+  }
+  function reset() {
+    clearInterval(tInterval);
+    tInterval = 0
+    timeDisplay.textContent = '00 : 00 : 00 : 00'
+    document.getElementById('rounds').innerHTML = '' //clear the round counters
+    document.getElementById('start').textContent = 'Start'
+    document.getElementById('roundsCont').style.display = 'none'
+  }
+
+  function round() {
+    if (tInterval && updatedTime - lastRound > 0) {
+      let li = document.createElement("li")
+      li.textContent = formatTime(lastRound, updatedTime)
+      document.getElementById('rounds').appendChild(li)
+      document.getElementById('roundsCont').style.display = ''
+      lastRound = updatedTime
+    }
+  }
+
+  function formatTime(start, end) {
+    let diff = end - start;
+    function padzero(input) {
+      return input = (input < 10) ? "0" + input : input;
+    }
+    let hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+    let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+    let seconds = Math.floor((diff % (1000 * 60)) / 1000)
+    let milliseconds = Math.floor((diff % (1000)) / 10)
+
+    return `${padzero(hours)} : ${padzero(minutes)} : 
+      ${padzero(seconds)} : ${padzero(milliseconds)}`;
+  }
+
+  function getShowTime() {
+    updatedTime = new Date().getTime();
+    timeDisplay.textContent = formatTime(startTime, updatedTime)
+  }
+</script>
+
+</html>
