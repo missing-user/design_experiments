@@ -1,26 +1,35 @@
 :root {
   --animd: .25s;
+  color-scheme: dark;
 }
 
 body {
   margin: 0;
   background-color: black;
-  max-width: 1600px;
+  max-width: 2000px;
   margin: auto;
+  overflow-x: hidden;
 }
 
-h1 {
+h1, h2, h3, h4, h5, h6 {
   left: 0;
   right: 0;
-  position: fixed;
-  top: 30%;
   text-align: center;
-  font-size: 10rem;
   z-index: 5;
   color: white;
   mix-blend-mode: exclusion;
   font-weight: 100;
   font-family: 'Libre Barcode 39 Text', cursive;
+}
+
+h1 {
+  position: sticky;
+  top: 30%;
+  font-size: 12rem;
+}
+
+h2 {
+  font-size: 8rem;
 }
 
 .row {
@@ -44,26 +53,6 @@ img {
   animation: fade_in 0.7s ease-in-out backwards;
 }
 
-.delay1 {
-  animation-delay: var(--animd);
-}
-
-.delay2 {
-  animation-delay: calc(2*var(--animd));
-}
-
-.delay3 {
-  animation-delay: calc(3*var(--animd));
-}
-
-.delay4 {
-  animation-delay: calc(4*var(--animd));
-}
-
-.delay5 {
-  animation-delay: calc(5*var(--animd));
-}
-
 @keyframes fade_in {
   0% {
     opacity: 0;
@@ -79,6 +68,16 @@ img {
 
 ::selection {
   background-color: red;
+}
+
+.contentSection {
+  padding-top: 40rem;
+  position: relative;
+}
+
+p {
+  font-size: 2rem;
+  color: white;
 }
 
 /*
@@ -99,4 +98,59 @@ img {
   pointer-events: none !important;
   box-shadow: 0 0 16px rgba(255, 255, 255, 0);
   z-index: 20;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 3.5rem;
+  }
+  h2 {
+    font-size: 3rem;
+  }
+  p {
+    font-size: 1.2rem;
+  }
+  .contentSection {
+    padding-top: 15rem;
+  }
+}
+
+/* curtainjs specific styling */
+
+#canvas {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 100vh;
+  opacity: 0;
+  transition: opacity 0.5s ease-in .4s;
+}
+
+.planes-loaded #canvas {
+  opacity: 1;
+}
+
+.plane img {
+  visibility: hidden;
+}
+
+.delay1 {
+  animation-delay: var(--animd);
+}
+
+.delay2 {
+  animation-delay: calc(2*var(--animd));
+}
+
+.delay3 {
+  animation-delay: calc(3*var(--animd));
+}
+
+.delay4 {
+  animation-delay: calc(4*var(--animd));
+}
+
+.delay5 {
+  animation-delay: calc(5*var(--animd));
 }
