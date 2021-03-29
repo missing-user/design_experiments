@@ -134,8 +134,8 @@ window.addEventListener("load", () => {
   const params = {
     vertexShader: vs,
     fragmentShader: fs,
-    widthSegments: 100,
-    heightSegments: 10,
+    widthSegments: 10,
+    heightSegments: 4,
     fov: 45,
     drawCheckMargins: {
       top: 100,
@@ -277,7 +277,6 @@ window.addEventListener("load", () => {
     if (!e.targetTouches)
       mouse.set(e.clientX, e.clientY);
 
-    // divided by a frame duration (roughly)
     let targetVelocity = [(mouse.x - lastMouse.x) / 16, (mouse.y - lastMouse.y) / 16];
 
     velocity.x = curtains.lerp(velocity.x, targetVelocity[0], 0.05)

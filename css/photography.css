@@ -1,6 +1,6 @@
 :root {
   --animd: .25s;
-  --glitch-offset: .05em;
+  --glitch-offset: .02em;
   color-scheme: dark;
 }
 
@@ -29,7 +29,7 @@ h1 {
   position: sticky;
   top: 30%;
   font-size: 12rem;
-  padding-bottom: 15rem;
+  padding-bottom: 10rem;
 }
 
 h2 {
@@ -54,7 +54,6 @@ h3 {
 img {
   width: 100%;
   object-fit: cover;
-  cursor: pointer;
 }
 
 .heroSection {
@@ -194,7 +193,7 @@ p {
 }
 
 .glitch:hover::after, .glitch:focus-within::after {
-  transform: translate(var(--glitch-offset), var(--glitch-offset));
+  transform: translate(calc(2*var(--glitch-offset)), var(--glitch-offset));
   color: rgb(0, 255, 0);
   opacity: 1;
 }
