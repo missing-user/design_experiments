@@ -1,0 +1,102 @@
+:root {
+  --animd: .25s;
+}
+
+body {
+  margin: 0;
+  background-color: black;
+  max-width: 1600px;
+  margin: auto;
+}
+
+h1 {
+  left: 0;
+  right: 0;
+  position: fixed;
+  top: 30%;
+  text-align: center;
+  font-size: 10rem;
+  z-index: 5;
+  color: white;
+  mix-blend-mode: exclusion;
+  font-weight: 100;
+  font-family: 'Libre Barcode 39 Text', cursive;
+}
+
+.row {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: -16.66%;
+}
+
+.column {
+  flex: 50%;
+}
+
+img {
+  width: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.fadein {
+  animation: fade_in 0.7s ease-in-out backwards;
+}
+
+.delay1 {
+  animation-delay: var(--animd);
+}
+
+.delay2 {
+  animation-delay: calc(2*var(--animd));
+}
+
+.delay3 {
+  animation-delay: calc(3*var(--animd));
+}
+
+.delay4 {
+  animation-delay: calc(4*var(--animd));
+}
+
+.delay5 {
+  animation-delay: calc(5*var(--animd));
+}
+
+@keyframes fade_in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.front {
+  z-index: 10;
+}
+
+::selection {
+  background-color: red;
+}
+
+/*
+::selection {
+  color: white;
+  mix-blend-mode: screen;
+  text-shadow: 4px 4px 0px rgba(255, 0, 0, .7), -4px 4px 0px rgba(0, 255, 0, .7), 4px -4px 0px rgba(0, 0, 255, .7)
+}*/
+
+#mouse-circle {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0px 0px -32px;
+  border: 1px solid #fff;
+  mix-blend-mode: exclusion;
+  border-radius: 50%;
+  pointer-events: none !important;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0);
+  z-index: 20;
+}
