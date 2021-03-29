@@ -1,14 +1,17 @@
 :root {
   --animd: .25s;
+  --glitch-offset: .05em;
   color-scheme: dark;
 }
 
 body {
+  font-family: 'Roboto', sans-serif;
   margin: 0;
   background-color: black;
-  max-width: 2000px;
+  max-width: 1800px;
   margin: auto;
   overflow-x: hidden;
+  font-size: 2rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -26,10 +29,15 @@ h1 {
   position: sticky;
   top: 30%;
   font-size: 12rem;
+  padding-bottom: 15rem;
 }
 
 h2 {
   font-size: 8rem;
+}
+
+h3 {
+  font-size: 6rem;
 }
 
 .row {
@@ -47,6 +55,10 @@ img {
   width: 100%;
   object-fit: cover;
   cursor: pointer;
+}
+
+.heroSection {
+  margin-bottom: 20rem;
 }
 
 .fadein {
@@ -71,33 +83,32 @@ img {
 }
 
 .contentSection {
-  padding-top: 40rem;
+  padding: 12rem 1.5rem;
   position: relative;
 }
 
 p {
-  font-size: 2rem;
   color: white;
+  text-align: center;
 }
-
-/*
-::selection {
-  color: white;
-  mix-blend-mode: screen;
-  text-shadow: 4px 4px 0px rgba(255, 0, 0, .7), -4px 4px 0px rgba(0, 255, 0, .7), 4px -4px 0px rgba(0, 0, 255, .7)
-}*/
 
 #mouse-circle {
   position: absolute;
   width: 64px;
   height: 64px;
   margin: -32px 0px 0px -32px;
-  border: 1px solid #fff;
+  border: 2px solid #fff;
   mix-blend-mode: exclusion;
   border-radius: 50%;
   pointer-events: none !important;
   box-shadow: 0 0 16px rgba(255, 255, 255, 0);
   z-index: 20;
+}
+
+#galleryContent {
+  position: absolute;
+  right: 2rem;
+  width: 40%;
 }
 
 @media (max-width: 768px) {
@@ -107,11 +118,17 @@ p {
   h2 {
     font-size: 3rem;
   }
-  p {
+  h3 {
+    font-size: 2rem;
+  }
+  body {
     font-size: 1.2rem;
   }
   .contentSection {
-    padding-top: 15rem;
+    padding: 6rem 1rem;
+  }
+  #galleryContent {
+    display: none;
   }
 }
 
@@ -132,7 +149,7 @@ p {
 }
 
 .plane img {
-  visibility: hidden;
+  opacity: 0;
 }
 
 .delay1 {
@@ -153,4 +170,37 @@ p {
 
 .delay5 {
   animation-delay: calc(5*var(--animd));
+}
+
+.glitch>a {
+  color: #fff;
+  text-decoration: none;
+  transition: all var(--animd);
+}
+
+.glitch:hover, .glitch:hover>a, .glitch:focus-within, .glitch:focus-within>a {
+  color: rgb(0, 0, 255);
+}
+
+.glitch::after, .glitch:before {
+  position: absolute;
+  content: attr(data-text);
+  left: 0;
+  mix-blend-mode: screen;
+  width: 100%;
+  pointer-events: none;
+  transition: all var(--animd);
+  opacity: 0;
+}
+
+.glitch:hover::after, .glitch:focus-within::after {
+  transform: translate(var(--glitch-offset), var(--glitch-offset));
+  color: rgb(0, 255, 0);
+  opacity: 1;
+}
+
+.glitch:hover::before, .glitch:focus-within::before {
+  transform: translate(var(--glitch-offset), calc(2*var(--glitch-offset)));
+  color: rgb(255, 0, 0);
+  opacity: 1;
 }

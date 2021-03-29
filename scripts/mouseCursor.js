@@ -23,16 +23,4 @@ if (window.matchMedia("(min-width: 768px)").matches) {
   }
   delayMouseFollow();
 
-
-  function makeMouseBig() {
-    mouseCircle.style.transform = 'scale(2)'
-  }
-  function makeMouseSmall() {
-    mouseCircle.style.transform = ''
-  }
-
-  for (const img of document.querySelectorAll('img')) {
-    img.addEventListener("mouseenter", makeMouseBig);
-    img.addEventListener("mouseout", makeMouseSmall);
-  }
 }

@@ -1,0 +1,85 @@
+button, select {
+  text-transform: none;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  margin: 0;
+}
+
+.email {
+  float: right;
+  width: 47%;
+}
+
+input[type='text'], [type='email'], select, textarea {
+  background: none;
+  border: none;
+  border-bottom: solid 1px white;
+  color: white;
+  margin: 0 0 1.875rem 0;
+  padding: 0 0 0.875rem 0;
+  text-transform: uppercase;
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+input[type='text']:focus, [type='email']:focus, textarea:focus {
+  padding: 0 0 0.875rem 0;
+}
+
+.message {
+  float: none;
+}
+
+.name {
+  float: left;
+  width: 47%;
+}
+
+.subject {
+  width: 100%;
+}
+
+textarea {
+  resize: none;
+  width: 100%;
+}
+
+::-webkit-input-placeholder {
+  color: white;
+  opacity: .5;
+}
+
+form>div {
+  margin: 2rem 0;
+}
+
+#form_button {
+  background: none;
+  border: solid 2px white;
+  color: white;
+  font-weight: bold;
+  outline: none;
+  padding: 20px 35px;
+  text-transform: uppercase;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+#form_button:hover {
+  background: white;
+  color: black;
+}
+
+label {
+  font-size: 2.6rem;
+}
+
+@media (max-width: 768px) {
+  label {
+    font-size: 2rem;
+  }
+}

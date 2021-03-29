@@ -1,4 +1,9 @@
 window.addEventListener("load", () => {
+  let galleryState = {
+    fullscreen: false,
+    planeIndex: 0,
+    plane: undefined,
+  }
 
   // set up our WebGL context and append the canvas to our wrapper
   const curtains = new Curtains({
@@ -11,6 +16,8 @@ window.addEventListener("load", () => {
     // increase/decrease the effect
     planesDeformations = curtains.lerp(planesDeformations, 0, 0.075);
     chromaDelta = curtains.lerp(chromaDelta, 0, .05);
+    velocity.x = curtains.lerp(velocity.x, 0, 0.05)
+    velocity.y = curtains.lerp(velocity.y, 0, 0.05)
   }).onScroll(() => {
     // get scroll deltas to apply the effect on scroll
     const delta = curtains.getScrollDeltas();
@@ -64,13 +71,13 @@ window.addEventListener("load", () => {
       varying vec2 vTextureCoord;
   
       uniform float uPlaneDeformation;
+      
   
       void main() {
           vec3 vertexPosition = aVertexPosition;
   
           // cool effect on scroll
-          vertexPosition.y += sin(((vertexPosition.x + 1.0) / 2.0) * 3.141592) * (sin(uPlaneDeformation / 90.0));
-  
+          vertexPosition.y += sin(((.5*vertexPosition.x - .5) / 2.0) * 3.141592) * (sin(uPlaneDeformation / 90.0));
           gl_Position = uPMatrix * uMVMatrix * vec4(vertexPosition, 1.0);
   
           // varyings
@@ -96,18 +103,24 @@ window.addEventListener("load", () => {
       
       float circle(vec2 vUv, vec2 disc_center, float disc_radius, float border_size) {
         vec2 uv = vUv;
-        uv -= disc_center;
+        uv -= disc_center/2.;
         uv *= uResolution;
         float dist = sqrt(dot(uv, uv));
         return smoothstep(disc_radius+border_size, disc_radius-border_size, dist);
       }
 
       void main() {
-          float c = circle(vTextureCoord, uMouse, 200.0, 200.);
-        	float c1 = texture2D( planeTexture, vTextureCoord - vec2( .05 )  * delta + c * (uVelocity * .05)).r;
-        	float c2 = texture2D( planeTexture, vTextureCoord + c * (uVelocity * .065)).g;
-        	float c3 = texture2D( planeTexture, vTextureCoord + vec2( .05 ) * delta + c * (uVelocity * .08)).b;
+          float c = circle(vTextureCoord, uMouse+1., 100., 200.);
+        	float c1 = texture2D( planeTexture, vTextureCoord - vec2( 0.02, .05 )  * delta + c * (uVelocity * .1)).r;
+        	float c2 = texture2D( planeTexture, vTextureCoord + c * (uVelocity * .175)).g;
+        	float c3 = texture2D( planeTexture, vTextureCoord + vec2( 0.02, .05 ) * delta + c * (uVelocity * .25)).b;
 	
+          // red and blue version
+          //float c1 = texture2D( planeTexture, vTextureCoord - vec2( 0.02, .05 )  * delta + c * (uVelocity * .1)).r;
+        	//float c2 = texture2D( planeTexture, vTextureCoord + vec2( 0.02, .05 ) * delta + c * (uVelocity * .25)).g;
+        	//float c3 = texture2D( planeTexture, vTextureCoord + vec2( 0.02, .05 ) * delta + c * (uVelocity * .25)).b;
+	
+
         	gl_FragColor = vec4( c1, c2, c3, 1.);
       }
   `;
@@ -121,7 +134,7 @@ window.addEventListener("load", () => {
   const params = {
     vertexShader: vs,
     fragmentShader: fs,
-    widthSegments: 10,
+    widthSegments: 100,
     heightSegments: 10,
     fov: 45,
     drawCheckMargins: {
@@ -188,11 +201,71 @@ window.addEventListener("load", () => {
       plane.uniforms.uVelo.value = chromaDelta;
       plane.uniforms.uMouse.value = plane.mouseToPlaneCoords(mouse)
       plane.uniforms.uVelocity.value = velocity
-      plane.uniforms.resolution.value = [1000, 1500]
+      plane.uniforms.resolution.value = [plane.getBoundingRect().width, plane.getBoundingRect().height]
     })
-    /*plane.onResize(() => {
-      curtainsBBox = curtains.getBoundingRect();
-    });*/
+
+    //enter gallery view when clicked
+    plane.htmlElement.addEventListener("click", (e) => {
+      e.stopPropagation();
+      enterGallery(plane, index)
+    });
+  }
+
+  function enterGallery(plane, index) {
+    if (galleryState.fullscreen)
+      exitGallery()
+    console.log('entering fullscreen', plane);
+    galleryState.fullscreen = true
+    galleryState.planeIndex = index
+    galleryState.plane = plane
+
+    const newScale = new Vec2();
+    const newTranslation = new Vec3();
+    const planeBBox = plane.getBoundingRect();
+    plane.setTransformOrigin(newTranslation);
+
+    let scaleX = curtainsBBox.width / planeBBox.width
+    let scaleY = curtainsBBox.height / planeBBox.height
+    let minScale = Math.min(scaleY, scaleX)
+    let translationX = -1 * planeBBox.left / curtains.pixelRatio
+    let translationY = -1 * planeBBox.top / curtains.pixelRatio
+
+    // plane scale
+    newScale.set(minScale, minScale);
+    plane.setScale(newScale);
+
+    // plane translation
+    newTranslation.set(translationX, translationY, 0);
+    plane.setRelativeTranslation(newTranslation);
+
+    document.getElementById('everything').style.visibility = 'hidden'
+    document.getElementById('galleryContent').style.display = ''
+
+    for (const otherplane of planes) {
+      if (otherplane.uuid != plane.uuid)
+        otherplane.visible = false
+    }
+  }
+
+  function exitGallery() {
+    console.log('exiting fullscreen');
+    for (const plane of planes) {
+      if (galleryState.plane.uuid == plane.uuid) {
+        plane.setScale(new Vec2(1, 1));
+        plane.setRelativeTranslation(new Vec3(0, 0, 0));
+      }
+      plane.visible = true
+    }
+    document.getElementById('everything').style.visibility = ''
+    document.getElementById('galleryContent').style.display = 'none'
+  }
+
+  function setGalleryIndex(newIndex) {
+    newIndex = newIndex % planes.length
+    if (newIndex < 0)
+      newIndex = planes.length - 1
+    exitGallery()
+    enterGallery(planes[newIndex], newIndex)
   }
 
   // mouse/touch move
@@ -201,18 +274,34 @@ window.addEventListener("load", () => {
     lastMouse.copy(mouse);
 
     // touch event
-    if (e.targetTouches) {
-      mouse.set(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
-    } else {
+    if (!e.targetTouches)
       mouse.set(e.clientX, e.clientY);
-    }
 
     // divided by a frame duration (roughly)
-    velocity.set((mouse.x - lastMouse.x) / 16, (mouse.y - lastMouse.y) / 16);
+    let targetVelocity = [(mouse.x - lastMouse.x) / 16, (mouse.y - lastMouse.y) / 16];
+
+    velocity.x = curtains.lerp(velocity.x, targetVelocity[0], 0.05)
+    velocity.y = curtains.lerp(velocity.y, targetVelocity[1], 0.05)
   }
 
   window.addEventListener("mousemove", onMouseMove);
-  window.addEventListener("touchmove", onMouseMove, {
-    passive: true
+  window.addEventListener("click", () => {
+    if (galleryState.fullscreen)
+      exitGallery()
   });
+  document.addEventListener('keydown', function (e) {
+    if (galleryState.fullscreen)
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'ArrowUp':
+
+          setGalleryIndex(galleryState.planeIndex + 1)
+          break;
+        case 'ArrowLeft':
+        case 'ArrowDown':
+          setGalleryIndex(galleryState.planeIndex - 1)
+          break;
+      }
+  });
+
 });

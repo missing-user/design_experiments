@@ -7,23 +7,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Photography</title>
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39+Text&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/photography.css">
+  <link rel="stylesheet" href="css/contactForm.css">
 </head>
+
 
 <body>
   <!-- div that will hold our WebGL canvas -->
-  <section id="mainContent">
-    <div id="canvas" class="delay3"></div>
+  <div id="canvas" class="delay3"></div>
 
-    <section>
-      <h1 class="fadein">Anders geile <br> Bilder</h1>
+  <div id="galleryContent" style="display: none;">
+    <h3>Image Title</h3>
+    <p>What is Lorem Ipsum?
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+      standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
+      make
+      a
+      type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+      remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets
+      containing
+      Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including
+      versions
+      of
+      Lorem Ipsum.
+    </p>
+  </div>
+  <div id="everything">
+    <section class="heroSection">
+      <h1 class="fadein">Richtig geile <br> Bilder</h1>
       <div class="row">
-        <div class="column">
-          <div class="plane">
-            <img class="fadein delay2" src="images/portrait_2.webp" alt="" data-sampler="planeTexture">
-          </div>
+        <div class="column plane">
+          <img class="fadein delay2" src="images/portrait_2.webp" alt="" data-sampler="planeTexture">
         </div>
         <div class="column">
         </div>
@@ -32,25 +48,29 @@
       <div class="row">
         <div class="column">
         </div>
+        <div class="column plane">
+          <img class="fadein delay3" src="images/portrait_3.webp" alt="" data-sampler="planeTexture">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="column plane">
+          <img class="fadein delay4" src="images/portrait_1.webp" alt="" data-sampler="planeTexture">
+        </div>
         <div class="column">
-          <div class="plane">
-            <img class="fadein delay3" src="images/portrait_3.webp" alt="" data-sampler="planeTexture">
-          </div>
         </div>
       </div>
 
       <div class="row">
         <div class="column">
-          <div class="plane">
-            <img class="fadein delay4" src="images/portrait_1.webp" alt="" data-sampler="planeTexture">
-          </div>
         </div>
-        <div class="column">
+        <div class="column plane">
+          <img class="fadein delay4" src="images/portrait_4.webp" alt="" data-sampler="planeTexture">
         </div>
       </div>
     </section>
     <section class="contentSection">
-      <h2>Schreib uns an</h2>
+      <h2>Wer wir sind</h2>
       <p>What is Lorem Ipsum?
         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
         standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
@@ -90,50 +110,42 @@
         of
         Lorem Ipsum.
       </p>
-      <p>What is Lorem Ipsum?
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
-        make
-        a
-        type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-        remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets
-        containing
-        Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including
-        versions
-        of
-        Lorem Ipsum.
-      </p>
-      <p>What is Lorem Ipsum?
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
-        make
-        a
-        type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-        remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets
-        containing
-        Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including
-        versions
-        of
-        Lorem Ipsum.
-      </p>
-      <p>What is Lorem Ipsum?
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
-        make
-        a
-        type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-        remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets
-        containing
-        Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including
-        versions
-        of
-        Lorem Ipsum.
-      </p>
+      <h2 class="glitch" data-text="Gallerie"><a href="#">Gallerie</a></h2>
     </section>
+    <section class="contentSection">
+      <h2>Schreib uns an</h2>
+      <form action="#" method="post" id="contact_form">
+        <div class="name">
+          <label for="name">Name</label>
+          <input type="text" placeholder="Mike" name="name" id="name_input" required>
+        </div>
+        <div class="email">
+          <label for="email">E-Mail</label>
+          <input type="email" placeholder="mike@sick-mail.de" name="email" id="email_input" required>
+        </div>
+        <div class="subject">
+          <select placeholder="Subject line" name="subject" id="subject_input" required>
+            <option selected>Ich will auch so geile Fotos!</option>
+            <option>Ich bin Influencer, habt ihr was für micht?</option>
+            <option>Ich mag eure Webseite!</option>
+            <option>Ich will was anderes</option>
+          </select>
+        </div>
+        <div class="message">
+          <label for="message" class="glitch" data-text="Persönliche Nachricht">Persönliche Nachricht</label>
+          <textarea name="message" placeholder="Ich will ein Kind von euch!" id="message_input" cols="30" rows="8"
+            required></textarea>
+        </div>
+        <div class="submit">
+          <input type="submit" value="Senden" id="form_button" />
+        </div>
+      </form><!-- // End form -->
+    </section>
+  </div>
 
 
 
-    <div id="mouse-circle"></div>
+  <div id="mouse-circle"></div>
 </body>
 <script src="./scripts/curtains.umd.min.js"></script>
 <script src="./scripts/photography.js"></script>
