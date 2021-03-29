@@ -106,7 +106,7 @@ p {
 }
 
 #galleryContent {
-  position: absolute;
+  position: fixed;
   right: 2rem;
   width: 40%;
 }
