@@ -20,7 +20,6 @@ input[type='text'], [type='email'], select, textarea {
   color: white;
   margin: 0 0 1.875rem 0;
   padding: 0 0 0.875rem 0;
-  text-transform: uppercase;
   width: 100%;
   box-sizing: border-box;
   -webkit-transition: all var(--animd);
@@ -56,7 +55,6 @@ form>div {
   font-weight: bold;
   outline: none;
   padding: 1rem 2rem;
-  text-transform: uppercase;
   -webkit-transition: color var(--animd), background-color var(--animd);
   transition: color var(--animd), background-color var(--animd);
 }
@@ -69,8 +67,4 @@ form>div {
 #form_button:focus {
   outline: solid 1px white;
   outline-offset: .2rem;
-}
-
-label {
-  font-size: 2.6rem;
 }

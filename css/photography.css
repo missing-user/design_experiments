@@ -4,6 +4,8 @@
   color-scheme: dark;
 }
 
+/* Text styling */
+
 body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
@@ -30,7 +32,6 @@ h1 {
   position: sticky;
   top: 30%;
   font-size: 12rem;
-  padding-bottom: 10rem;
 }
 
 h2 {
@@ -41,11 +42,39 @@ h3 {
   font-size: 6rem;
 }
 
+p {
+  text-align: center;
+  line-height: 1.5em;
+}
+
+a {
+  color: white;
+  background: linear-gradient(0deg, red, red);
+  background-position: 0 1.6rem;
+  background-size: 60% .5rem;
+  background-repeat: no-repeat;
+  text-decoration: none;
+  transition: background-size var(--animd);
+}
+
+a:hover, a:focus, a:active {
+  background-size: 100% .5rem;
+}
+
+a:visited {
+  text-decoration: line-through;
+}
+
+::selection {
+  background-color: red;
+}
+
+/* Layout Styling */
+
 .row {
   display: flex;
   position: relative;
   overflow: hidden;
-  margin-bottom: -16.66%;
 }
 
 .column {
@@ -58,8 +87,15 @@ img {
 }
 
 .heroSection {
-  margin-bottom: 20rem;
+  margin-bottom: 10rem;
 }
+
+.contentSection {
+  padding: 12rem 2rem;
+  position: relative;
+}
+
+/* Animations */
 
 .fadein {
   animation: fade_in calc(3*var(--animd)) ease-in-out backwards;
@@ -74,58 +110,53 @@ img {
   }
 }
 
-.front {
-  z-index: 10;
+.delay1 {
+  animation-delay: var(--animd);
 }
 
-::selection {
-  background-color: red;
+.delay2 {
+  animation-delay: calc(2*var(--animd));
 }
 
-.contentSection {
-  padding: 12rem 2rem;
-  position: relative;
+.delay3 {
+  animation-delay: calc(3*var(--animd));
 }
 
-p {
-  color: white;
-  text-align: center;
+.delay4 {
+  animation-delay: calc(4*var(--animd));
 }
 
-#mouse-circle {
-  position: absolute;
-  width: 8rem;
-  height: 8rem;
-  margin: -4rem 0px 0px -4rem;
-  border: 1px solid #fff;
-  mix-blend-mode: exclusion;
-  border-radius: 50%;
-  pointer-events: none !important;
-  opacity: 0;
-  z-index: 20;
+.delay5 {
+  animation-delay: calc(5*var(--animd));
 }
 
 @media (max-width: 768px) {
-  h1 {
-    font-size: 3.5rem;
-  }
-  h2 {
-    font-size: 3rem;
-  }
-  h3 {
-    font-size: 2rem;
-  }
-  body {
-    font-size: 1.2rem;
+  :root {
+    font-size: 52.5%;
   }
   .contentSection {
     padding: 6rem 1rem;
   }
+  h1 {
+    font-size: 7.5rem;
+  }
+  h2 {
+    font-size: 6rem;
+  }
+  h3 {
+    font-size: 4rem;
+  }
 }
 
-@media (max-width: 1370px) {
+@media (min-width: 768px) {
   :root {
     font-size: 62.5%;
+  }
+}
+
+@media (min-width: 1370px) {
+  :root {
+    font-size: 100%;
   }
 }
 
@@ -152,28 +183,24 @@ p {
 }
 
 .plane img {
-  opacity: 0;
   cursor: pointer;
 }
 
-.delay1 {
-  animation-delay: var(--animd);
+.planes-loaded .plane img {
+  opacity: 0;
 }
 
-.delay2 {
-  animation-delay: calc(2*var(--animd));
-}
-
-.delay3 {
-  animation-delay: calc(3*var(--animd));
-}
-
-.delay4 {
-  animation-delay: calc(4*var(--animd));
-}
-
-.delay5 {
-  animation-delay: calc(5*var(--animd));
+#mouse-circle {
+  position: absolute;
+  width: 8rem;
+  height: 8rem;
+  margin: -4rem 0px 0px -4rem;
+  border: 1px solid #fff;
+  mix-blend-mode: exclusion;
+  border-radius: 50%;
+  pointer-events: none !important;
+  opacity: 0;
+  z-index: 20;
 }
 
 /* 
@@ -212,16 +239,6 @@ Glitch hover effect turned out to be really unintuitive
   opacity: 1;
 }*/
 
-a {
-  color: white;
-  background: linear-gradient(0deg, red, red);
-  background-position: 0 1.6rem;
-  background-size: 60% .5rem;
-  background-repeat: no-repeat;
-  text-decoration: none;
-  transition: background-size var(--animd);
-}
-
 body.is-fullscreen {
   overflow: hidden;
 }
@@ -239,12 +256,4 @@ body.is-fullscreen #galleryContent {
   position: fixed;
   right: 2rem;
   width: 40%;
-}
-
-a:hover, a:focus, a:active {
-  background-size: 100% .5rem;
-}
-
-a:visited {
-  text-decoration: line-through;
 }

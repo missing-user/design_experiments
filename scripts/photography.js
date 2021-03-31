@@ -26,7 +26,7 @@ window.addEventListener("load", () => {
     // get scroll deltas to apply the effect on scroll
     const delta = curtains.getScrollDeltas();
     if (Math.abs(delta.y) > Math.abs(planesDeformations)) {
-      planesDeformations = curtains.lerp(planesDeformations, limit(delta.y, -40, 40), 0.15);
+      planesDeformations = curtains.lerp(planesDeformations, limit(delta.y, -20, 20), 0.1);
     }
     if (Math.abs(delta.y) > Math.abs(chromaDelta)) {
       chromaDelta = curtains.lerp(chromaDelta, limit(delta.y, -10, 10) / 10, 0.05);
@@ -42,7 +42,6 @@ window.addEventListener("load", () => {
     if (galleryState.fullscreen)
       makePlaneFullscreenSize(galleryState.plane)
   });
-  console.log(curtains);
 
   // we will keep track of all our planes in an array
   const planes = [];
@@ -73,7 +72,7 @@ window.addEventListener("load", () => {
           vec3 vertexPosition = aVertexPosition;
   
           // cool effect on scroll
-          vertexPosition.y += sin(((.5*vertexPosition.x - .5) / 2.0) * 3.141592) * (sin(-uPlaneDeformation / 90.0));
+          vertexPosition.y += sin((vertexPosition.x*.5-.5) * 3.141592) * (sin(-uPlaneDeformation / 90.0));
           gl_Position = uPMatrix * uMVMatrix * vec4(vertexPosition, 1.0);
   
           // varyings
@@ -88,7 +87,7 @@ window.addEventListener("load", () => {
       varying vec3 vVertexPosition;
       varying vec2 vTextureCoord;
 
-      uniform float delta;
+      uniform float uScrollDelta;
       uniform sampler2D planeTexture;
   
       uniform vec2 uResolution;
@@ -105,15 +104,15 @@ window.addEventListener("load", () => {
       }
 
       void main() {
-          float c = circle(vTextureCoord, uMouse+1., 120., 180.);
-        	float c1 = texture2D( planeTexture, vTextureCoord - vec2( 0.02, .05 )  * delta + c * (uVelocity * .05)).r;
+          float c = circle(vTextureCoord, uMouse+1., .1, .25);
+        	float c1 = texture2D( planeTexture, vTextureCoord - vec2( 0.02, .05 )  * uScrollDelta + c * (uVelocity * .05)).r;
         	float c2 = texture2D( planeTexture, vTextureCoord + c * (uVelocity * .125)).g;
-        	float c3 = texture2D( planeTexture, vTextureCoord + vec2( 0.02, .05 ) * delta + c * (uVelocity * .2)).b;
+        	float c3 = texture2D( planeTexture, vTextureCoord + vec2( 0.02, .05 ) * uScrollDelta + c * (uVelocity * .2)).b;
 	
           // red and blue version
-          //float c1 = texture2D( planeTexture, vTextureCoord - vec2( 0.02, .05 )  * delta + c * (uVelocity * .1)).r;
-        	//float c2 = texture2D( planeTexture, vTextureCoord + vec2( 0.02, .05 ) * delta + c * (uVelocity * .25)).g;
-        	//float c3 = texture2D( planeTexture, vTextureCoord + vec2( 0.02, .05 ) * delta + c * (uVelocity * .25)).b;
+          //float c1 = texture2D( planeTexture, vTextureCoord - vec2( 0.02, .05 )  * uScrollDelta + c * (uVelocity * .1)).r;
+        	//float c2 = texture2D( planeTexture, vTextureCoord + vec2( 0.02, .05 ) * uScrollDelta + c * (uVelocity * .25)).g;
+        	//float c3 = texture2D( planeTexture, vTextureCoord + vec2( 0.02, .05 ) * uScrollDelta + c * (uVelocity * .25)).b;
 	
 
         	gl_FragColor = vec4( c1, c2, c3, 1.);
@@ -144,7 +143,7 @@ window.addEventListener("load", () => {
         value: 0,
       },
       delta: {
-        name: "delta",
+        name: "uScrollDelta",
         type: "1f",
         value: 1,
       },
@@ -204,13 +203,14 @@ window.addEventListener("load", () => {
       if (index === planes.length - 1) {
         document.body.classList.add("planes-loaded");
       }
+      console.log(plane);
+      plane.uniforms.resolution.value = [plane.getBoundingRect().width / plane.getBoundingRect().height, 1]
     }).onRender(() => {
       // update the uniform
       plane.uniforms.planeDeformation.value = planesDeformations;
       plane.uniforms.delta.value = chromaDelta;
       plane.uniforms.uMouse.value = plane.mouseToPlaneCoords(mouse)
       plane.uniforms.uVelocity.value = velocity
-      plane.uniforms.resolution.value = [plane.getBoundingRect().width, plane.getBoundingRect().height]
     })
 
     //enter gallery view when clicked
@@ -266,8 +266,11 @@ window.addEventListener("load", () => {
     lastMouse.copy(mouse);
 
     // touch event
-    if (!e.targetTouches)
+    if (e.targetTouches)
+      mouse.set(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
+    else
       mouse.set(e.clientX, e.clientY);
+
 
     let targetVelocity = [(mouse.x - lastMouse.x) / 16, (mouse.y - lastMouse.y) / 16];
 
@@ -276,6 +279,8 @@ window.addEventListener("load", () => {
   }
 
   window.addEventListener("mousemove", onMouseMove);
+  window.addEventListener("touchmove", onMouseMove);
+
   window.addEventListener("click", () => {
     if (galleryState.fullscreen)
       exitGallery()
