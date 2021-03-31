@@ -8,11 +8,6 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  margin: 0;
-  background-color: black;
-  max-width: 100rem;
-  margin: auto;
-  overflow-x: hidden;
   font-size: 2rem;
   color: white;
 }
@@ -22,7 +17,6 @@ h1, h2, h3, h4, h5, h6 {
   width: fit-content;
   margin-left: auto;
   margin-right: auto;
-  z-index: 5;
   mix-blend-mode: exclusion;
   font-weight: 100;
   font-family: 'Libre Barcode 39 Text', sans-serif;
@@ -32,6 +26,7 @@ h1 {
   position: sticky;
   top: 30%;
   font-size: 12rem;
+  z-index: 5;
 }
 
 h2 {
@@ -48,21 +43,18 @@ p {
 }
 
 a {
+  transition: color var(--animd), background-color var(--animd);
+}
+
+a:link, a:visited {
   color: white;
-  background: linear-gradient(0deg, red, red);
-  background-position: 0 1.6rem;
-  background-size: 60% .5rem;
-  background-repeat: no-repeat;
-  text-decoration: none;
-  transition: background-size var(--animd);
 }
 
 a:hover, a:focus, a:active {
-  background-size: 100% .5rem;
-}
-
-a:visited {
-  text-decoration: line-through;
+  background-color: white;
+  background-repeat: no-repeat;
+  color: black;
+  outline-offset: .25rem;
 }
 
 ::selection {
@@ -70,6 +62,13 @@ a:visited {
 }
 
 /* Layout Styling */
+
+body {
+  max-width: 100rem;
+  margin: auto;
+  overflow-x: hidden;
+  background-color: black;
+}
 
 .row {
   display: flex;
@@ -129,6 +128,8 @@ img {
 .delay5 {
   animation-delay: calc(5*var(--animd));
 }
+
+/* Responsive Media Queries */
 
 @media (max-width: 768px) {
   :root {
@@ -190,70 +191,30 @@ img {
   opacity: 0;
 }
 
-#mouse-circle {
-  position: absolute;
-  width: 8rem;
-  height: 8rem;
-  margin: -4rem 0px 0px -4rem;
-  border: 1px solid #fff;
-  mix-blend-mode: exclusion;
-  border-radius: 50%;
-  pointer-events: none !important;
-  opacity: 0;
-  z-index: 20;
-}
-
-/* 
-Glitch hover effect turned out to be really unintuitive
-
-.glitch>a {
-  color: #fff;
-  text-decoration: none;
-  transition: all var(--animd);
-}
-
-.glitch:hover, .glitch:hover>a, .glitch:focus-within, .glitch:focus-within>a {
-  color: rgb(0, 0, 255);
-}
-
-.glitch::after, .glitch:before {
-  position: absolute;
-  content: attr(data-text);
-  left: 0;
-  mix-blend-mode: screen;
-  width: 100%;
-  pointer-events: none;
-  transition: all var(--animd);
-  opacity: 0;
-}
-
-.glitch:hover::after, .glitch:focus-within::after {
-  transform: translate(calc(2*var(--glitch-offset)), var(--glitch-offset));
-  color: rgb(0, 255, 0);
-  opacity: 1;
-}
-
-.glitch:hover::before, .glitch:focus-within::before {
-  transform: translate(var(--glitch-offset), calc(2*var(--glitch-offset)));
-  color: rgb(255, 0, 0);
-  opacity: 1;
-}*/
+/* Gallery styling */
 
 body.is-fullscreen {
   overflow: hidden;
 }
 
 body.is-fullscreen #canvas {
-  z-index: 99;
+  z-index: 20;
 }
 
 #galleryContent {
   display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 2rem;
+  background: black;
+  /*backdrop-filter: blur(6px);*/
+  text-align: right;
+  z-index: 10;
 }
 
 body.is-fullscreen #galleryContent {
   display: inherit;
-  position: fixed;
-  right: 2rem;
-  width: 40%;
 }

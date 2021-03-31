@@ -1,9 +1,4 @@
 window.addEventListener("load", () => {
-  let galleryState = {
-    fullscreen: false, //disable scrolling etc
-    planeIndex: 0,
-    plane: undefined, //selected Plane
-  }
   // set up our WebGL context and append the canvas to our wrapper
   const curtains = new Curtains({
     container: "canvas",
@@ -39,8 +34,7 @@ window.addEventListener("load", () => {
     curtains.restoreContext();
   }).onAfterResize(() => {
     curtainsBBox = curtains.getBoundingRect();
-    if (galleryState.fullscreen)
-      makePlaneFullscreenSize(galleryState.plane)
+    gallery.resize()
   });
 
   // we will keep track of all our planes in an array
@@ -48,39 +42,7 @@ window.addEventListener("load", () => {
   let planesDeformations = 0, chromaDelta = 0;
   let planeElements = document.getElementsByClassName("plane");
 
-  //shaders
-  const vs = `
-      precision mediump float;
-  
-      // default mandatory variables
-      attribute vec3 aVertexPosition;
-      attribute vec2 aTextureCoord;
-  
-      uniform mat4 uMVMatrix;
-      uniform mat4 uPMatrix;
-  
-      uniform mat4 planeTextureMatrix;
-  
-      // custom variables
-      varying vec3 vVertexPosition;
-      varying vec2 vTextureCoord;
-  
-      uniform float uPlaneDeformation;
-      
-  
-      void main() {
-          vec3 vertexPosition = aVertexPosition;
-  
-          // cool effect on scroll
-          vertexPosition.y += sin((vertexPosition.x*.5-.5) * 3.141592) * (sin(-uPlaneDeformation / 90.0));
-          gl_Position = uPMatrix * uMVMatrix * vec4(vertexPosition, 1.0);
-  
-          // varyings
-          vVertexPosition = vertexPosition;
-          vTextureCoord = (planeTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;
-      }
-  `;
-
+  //fragment shader
   const fs = `
       precision mediump float;
   
@@ -105,9 +67,10 @@ window.addEventListener("load", () => {
 
       void main() {
           float c = circle(vTextureCoord, uMouse+1., .1, .25);
-        	float c1 = texture2D( planeTexture, vTextureCoord - vec2( 0.02, .05 )  * uScrollDelta + c * (uVelocity * .05)).r;
-        	float c2 = texture2D( planeTexture, vTextureCoord + c * (uVelocity * .125)).g;
-        	float c3 = texture2D( planeTexture, vTextureCoord + vec2( 0.02, .05 ) * uScrollDelta + c * (uVelocity * .2)).b;
+          
+        	float c1 = texture2D( planeTexture, vTextureCoord - vec2( 0.02, .05 ) * uScrollDelta - c * (uVelocity * .05)).r;
+        	float c2 = texture2D( planeTexture, vTextureCoord ).g;
+          float c3 = texture2D( planeTexture, vTextureCoord + vec2( 0.02, .05 ) * uScrollDelta + c * (uVelocity * .05)).b;
 	
           // red and blue version
           //float c1 = texture2D( planeTexture, vTextureCoord - vec2( 0.02, .05 )  * uScrollDelta + c * (uVelocity * .1)).r;
@@ -125,7 +88,6 @@ window.addEventListener("load", () => {
   const velocity = new Vec2();
 
   const params = {
-    vertexShader: vs,
     fragmentShader: fs,
     widthSegments: 10,
     heightSegments: 4,
@@ -172,27 +134,6 @@ window.addEventListener("load", () => {
     handlePlanes(i);
   }
 
-  function makePlaneFullscreenSize(plane) {
-    const newScale = new Vec2();
-    const newTranslation = new Vec3();
-    const planeBBox = plane.getBoundingRect();
-    plane.setTransformOrigin(newTranslation);
-
-    let scaleX = curtainsBBox.width / planeBBox.width
-    let scaleY = curtainsBBox.height / planeBBox.height
-    let minScale = Math.min(scaleY, scaleX)
-    let translationX = -1 * planeBBox.left / curtains.pixelRatio
-    let translationY = -1 * planeBBox.top / curtains.pixelRatio
-
-    // plane scale
-    newScale.set(minScale, minScale);
-    plane.setScale(newScale);
-
-    // plane translation
-    newTranslation.set(translationX, translationY, 0);
-    plane.setRelativeTranslation(newTranslation);
-  }
-
   // handle all the planes
   function handlePlanes(index) {
     const plane = planes[index];
@@ -203,7 +144,6 @@ window.addEventListener("load", () => {
       if (index === planes.length - 1) {
         document.body.classList.add("planes-loaded");
       }
-      console.log(plane);
       plane.uniforms.resolution.value = [plane.getBoundingRect().width / plane.getBoundingRect().height, 1]
     }).onRender(() => {
       // update the uniform
@@ -216,48 +156,8 @@ window.addEventListener("load", () => {
     //enter gallery view when clicked
     plane.htmlElement.addEventListener("click", (e) => {
       e.stopPropagation();
-      enterGallery(plane, index)
+      gallery.enter(index)
     });
-  }
-
-  function enterGallery(plane, index) {
-    if (galleryState.fullscreen)
-      exitGallery()
-    console.log('entering fullscreen', plane);
-    galleryState.fullscreen = true
-    galleryState.planeIndex = index
-    galleryState.plane = plane
-
-    makePlaneFullscreenSize(plane)
-
-    if (!document.body.classList.contains('is-fullscreen'))
-      document.body.classList.toggle('is-fullscreen')
-
-    for (const otherplane of planes) {
-      if (otherplane.uuid != plane.uuid)
-        otherplane.visible = false
-    }
-  }
-
-  function exitGallery() {
-    console.log('exiting fullscreen');
-    for (const plane of planes) {
-      if (galleryState.plane.uuid == plane.uuid) {
-        plane.setScale(new Vec2(1, 1));
-        plane.setRelativeTranslation(new Vec3(0, 0, 0));
-      }
-      plane.visible = true
-    }
-    if (document.body.classList.contains('is-fullscreen'))
-      document.body.classList.toggle('is-fullscreen')
-  }
-
-  function setGalleryIndex(newIndex) {
-    newIndex = newIndex % planes.length
-    if (newIndex < 0)
-      newIndex = planes.length - 1
-    exitGallery()
-    enterGallery(planes[newIndex], newIndex)
   }
 
   // mouse/touch move
@@ -281,23 +181,103 @@ window.addEventListener("load", () => {
   window.addEventListener("mousemove", onMouseMove);
   window.addEventListener("touchmove", onMouseMove);
 
-  window.addEventListener("click", () => {
-    if (galleryState.fullscreen)
-      exitGallery()
-  });
-  document.addEventListener('keydown', function (e) {
-    if (galleryState.fullscreen)
-      switch (e.key) {
-        case 'ArrowRight':
-        case 'ArrowUp':
-
-          setGalleryIndex(galleryState.planeIndex + 1)
-          break;
-        case 'ArrowLeft':
-        case 'ArrowDown':
-          setGalleryIndex(galleryState.planeIndex - 1)
-          break;
-      }
-  });
-
+  let gallery = new GLSLgallery(curtains)
 });
+
+class GLSLgallery {
+  constructor(curtains) {
+    this.curtains = curtains
+    this.planes = curtains.planes
+    this.bbox = this.curtains.getBoundingRect();
+    this.state = {
+      fullscreen: false, //disable scrolling etc
+      planeIndex: 0
+    }
+
+    const galleryRef = this
+    window.addEventListener("click", () => {
+      if (galleryRef.state.fullscreen)
+        galleryRef.exit()
+    });
+    document.addEventListener('keydown', function (e) {
+      if (galleryRef.state.fullscreen)
+        switch (e.key) {
+          case 'ArrowRight':
+          case 'ArrowUp':
+            galleryRef.setIndex(galleryRef.state.planeIndex + 1)
+            break;
+          case 'ArrowLeft':
+          case 'ArrowDown':
+            galleryRef.setIndex(galleryRef.state.planeIndex - 1)
+            break;
+        }
+    });
+  }
+
+  makePlaneFullscreenSize(index) {
+    const plane = this.planes[index]
+    const newScale = new Vec2();
+    const newTranslation = new Vec3();
+    const planeBBox = plane.getBoundingRect();
+    plane.setTransformOrigin(newTranslation);
+
+    let scaleX = this.bbox.width / planeBBox.width
+    let scaleY = this.bbox.height / planeBBox.height
+    let minScale = Math.min(scaleY, scaleX)
+    let translationX = -1 * planeBBox.left / this.curtains.pixelRatio
+    let translationY = -1 * planeBBox.top / this.curtains.pixelRatio
+
+    // plane scale
+    newScale.set(minScale, minScale);
+    plane.setScale(newScale);
+
+    // plane translation
+    newTranslation.set(translationX, translationY, 0);
+    plane.setRelativeTranslation(newTranslation);
+  }
+
+  enter(index) {
+    if (this.state.fullscreen)
+      this.exit()
+    console.log('entering fullscreen');
+    this.state.fullscreen = true
+    this.state.planeIndex = index
+
+    this.makePlaneFullscreenSize(index)
+
+    if (!document.body.classList.contains('is-fullscreen'))
+      document.body.classList.toggle('is-fullscreen')
+
+    for (const otherplane of this.planes) {
+      if (otherplane.uuid != this.planes[index].uuid)
+        otherplane.visible = false
+    }
+  }
+
+  resize() {
+    this.bbox = this.curtains.getBoundingRect();
+    if (this.state.fullscreen)
+      this.makePlaneFullscreenSize(this.state.planeIndex)
+  }
+
+  exit() {
+    console.log('exiting fullscreen');
+    for (const plane of this.planes) {
+      if (this.planes[this.state.planeIndex].uuid == plane.uuid) {
+        plane.setScale(new Vec2(1, 1));
+        plane.setRelativeTranslation(new Vec3(0, 0, 0));
+      }
+      plane.visible = true
+    }
+    if (document.body.classList.contains('is-fullscreen'))
+      document.body.classList.toggle('is-fullscreen')
+  }
+
+  setIndex(newIndex) {
+    newIndex = newIndex % this.planes.length
+    if (newIndex < 0)
+      newIndex = this.planes.length - 1
+    this.exit()
+    this.enter(newIndex)
+  }
+}

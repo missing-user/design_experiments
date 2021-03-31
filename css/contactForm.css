@@ -66,5 +66,5 @@ form>div {
 
 #form_button:focus {
   outline: solid 1px white;
-  outline-offset: .2rem;
+  outline-offset: .25rem;
 }
