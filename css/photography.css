@@ -1,6 +1,6 @@
 :root {
   --animd: .25s;
-  --glitch-offset: .02em;
+  --glitch-offset: .2rem;
   color-scheme: dark;
 }
 
@@ -8,21 +8,22 @@ body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
   background-color: black;
-  max-width: 1800px;
+  max-width: 100rem;
   margin: auto;
   overflow-x: hidden;
   font-size: 2rem;
+  color: white;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  left: 0;
-  right: 0;
   text-align: center;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
   z-index: 5;
-  color: white;
   mix-blend-mode: exclusion;
   font-weight: 100;
-  font-family: 'Libre Barcode 39 Text', cursive;
+  font-family: 'Libre Barcode 39 Text', sans-serif;
 }
 
 h1 {
@@ -61,7 +62,7 @@ img {
 }
 
 .fadein {
-  animation: fade_in 0.7s ease-in-out backwards;
+  animation: fade_in calc(3*var(--animd)) ease-in-out backwards;
 }
 
 @keyframes fade_in {
@@ -82,7 +83,7 @@ img {
 }
 
 .contentSection {
-  padding: 12rem 1.5rem;
+  padding: 12rem 2rem;
   position: relative;
 }
 
@@ -93,21 +94,15 @@ p {
 
 #mouse-circle {
   position: absolute;
-  width: 64px;
-  height: 64px;
-  margin: -32px 0px 0px -32px;
-  border: 2px solid #fff;
+  width: 8rem;
+  height: 8rem;
+  margin: -4rem 0px 0px -4rem;
+  border: 1px solid #fff;
   mix-blend-mode: exclusion;
   border-radius: 50%;
   pointer-events: none !important;
-  box-shadow: 0 0 16px rgba(255, 255, 255, 0);
+  opacity: 0;
   z-index: 20;
-}
-
-#galleryContent {
-  position: fixed;
-  right: 2rem;
-  width: 40%;
 }
 
 @media (max-width: 768px) {
@@ -126,8 +121,17 @@ p {
   .contentSection {
     padding: 6rem 1rem;
   }
-  #galleryContent {
-    display: none;
+}
+
+@media (max-width: 1370px) {
+  :root {
+    font-size: 62.5%;
+  }
+}
+
+@media (min-width: 2600px) {
+  :root {
+    font-size: 125%;
   }
 }
 
@@ -140,7 +144,7 @@ p {
   left: 0;
   height: 100vh;
   opacity: 0;
-  transition: opacity 0.5s ease-in .4s;
+  transition: opacity calc(2*var(--animd)) ease-in calc(2*var(--animd));
 }
 
 .planes-loaded #canvas {
@@ -149,6 +153,7 @@ p {
 
 .plane img {
   opacity: 0;
+  cursor: pointer;
 }
 
 .delay1 {
@@ -170,6 +175,9 @@ p {
 .delay5 {
   animation-delay: calc(5*var(--animd));
 }
+
+/* 
+Glitch hover effect turned out to be really unintuitive
 
 .glitch>a {
   color: #fff;
@@ -202,4 +210,41 @@ p {
   transform: translate(var(--glitch-offset), calc(2*var(--glitch-offset)));
   color: rgb(255, 0, 0);
   opacity: 1;
+}*/
+
+a {
+  color: white;
+  background: linear-gradient(0deg, red, red);
+  background-position: 0 1.6rem;
+  background-size: 60% .5rem;
+  background-repeat: no-repeat;
+  text-decoration: none;
+  transition: background-size var(--animd);
+}
+
+body.is-fullscreen {
+  overflow: hidden;
+}
+
+body.is-fullscreen #canvas {
+  z-index: 99;
+}
+
+#galleryContent {
+  display: none;
+}
+
+body.is-fullscreen #galleryContent {
+  display: inherit;
+  position: fixed;
+  right: 2rem;
+  width: 40%;
+}
+
+a:hover, a:focus, a:active {
+  background-size: 100% .5rem;
+}
+
+a:visited {
+  text-decoration: line-through;
 }

@@ -15,7 +15,7 @@ if (window.matchMedia("(min-width: 768px)").matches) {
     lastMove = Date.now()
   };
 
-  let delay = 6,
+  let delay = 3,
     revisedMousePosX = 0,
     revisedMousePosY = 0;
 

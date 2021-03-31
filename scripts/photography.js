@@ -1,43 +1,35 @@
 window.addEventListener("load", () => {
   let galleryState = {
-    fullscreen: false,
+    fullscreen: false, //disable scrolling etc
     planeIndex: 0,
-    plane: undefined,
+    plane: undefined, //selected Plane
   }
-
   // set up our WebGL context and append the canvas to our wrapper
   const curtains = new Curtains({
     container: "canvas",
     pixelRatio: Math.min(1.5, window.devicePixelRatio) // limit pixel ratio for performance
   });
+  let curtainsBBox = curtains.getBoundingRect();
+
+
+  function limit(input, min, max) {
+    return Math.min(Math.max(input, min), max)
+  }
+
 
   curtains.onRender(() => {
-    // update our planes deformation
-    // increase/decrease the effect
     planesDeformations = curtains.lerp(planesDeformations, 0, 0.075);
-    chromaDelta = curtains.lerp(chromaDelta, 0, .05);
-    velocity.x = curtains.lerp(velocity.x, 0, 0.05)
-    velocity.y = curtains.lerp(velocity.y, 0, 0.05)
+    chromaDelta = curtains.lerp(chromaDelta, 0, .04);
+    velocity.x = curtains.lerp(velocity.x, 0, 0.02)
+    velocity.y = curtains.lerp(velocity.y, 0, 0.02)
   }).onScroll(() => {
     // get scroll deltas to apply the effect on scroll
     const delta = curtains.getScrollDeltas();
-
-    // invert value for the effect
-    delta.y = delta.y;
-
-    // threshold
-    if (delta.y > 40) {
-      delta.y = 40;
-    }
-    else if (delta.y < -40) {
-      delta.y = -40;
-    }
-
     if (Math.abs(delta.y) > Math.abs(planesDeformations)) {
-      planesDeformations = curtains.lerp(planesDeformations, delta.y, 0.05);
+      planesDeformations = curtains.lerp(planesDeformations, limit(delta.y, -40, 40), 0.15);
     }
     if (Math.abs(delta.y) > Math.abs(chromaDelta)) {
-      chromaDelta = curtains.lerp(chromaDelta, delta.y, .05);
+      chromaDelta = curtains.lerp(chromaDelta, limit(delta.y, -10, 10) / 10, 0.05);
     }
   }).onError(() => {
     // we will add a class to the document body to display original images
@@ -45,15 +37,19 @@ window.addEventListener("load", () => {
   }).onContextLost(() => {
     // on context lost, try to restore the context
     curtains.restoreContext();
+  }).onAfterResize(() => {
+    curtainsBBox = curtains.getBoundingRect();
+    if (galleryState.fullscreen)
+      makePlaneFullscreenSize(galleryState.plane)
   });
+  console.log(curtains);
 
   // we will keep track of all our planes in an array
   const planes = [];
   let planesDeformations = 0, chromaDelta = 0;
-
-  // get our planes elements
   let planeElements = document.getElementsByClassName("plane");
 
+  //shaders
   const vs = `
       precision mediump float;
   
@@ -77,7 +73,7 @@ window.addEventListener("load", () => {
           vec3 vertexPosition = aVertexPosition;
   
           // cool effect on scroll
-          vertexPosition.y += sin(((.5*vertexPosition.x - .5) / 2.0) * 3.141592) * (sin(uPlaneDeformation / 90.0));
+          vertexPosition.y += sin(((.5*vertexPosition.x - .5) / 2.0) * 3.141592) * (sin(-uPlaneDeformation / 90.0));
           gl_Position = uPMatrix * uMVMatrix * vec4(vertexPosition, 1.0);
   
           // varyings
@@ -98,7 +94,6 @@ window.addEventListener("load", () => {
       uniform vec2 uResolution;
       uniform vec2 uMouse;
       uniform vec2 uVelocity;
-      uniform float uVelo;
       
       
       float circle(vec2 vUv, vec2 disc_center, float disc_radius, float border_size) {
@@ -110,10 +105,10 @@ window.addEventListener("load", () => {
       }
 
       void main() {
-          float c = circle(vTextureCoord, uMouse+1., 100., 200.);
-        	float c1 = texture2D( planeTexture, vTextureCoord - vec2( 0.02, .05 )  * delta + c * (uVelocity * .1)).r;
-        	float c2 = texture2D( planeTexture, vTextureCoord + c * (uVelocity * .175)).g;
-        	float c3 = texture2D( planeTexture, vTextureCoord + vec2( 0.02, .05 ) * delta + c * (uVelocity * .25)).b;
+          float c = circle(vTextureCoord, uMouse+1., 120., 180.);
+        	float c1 = texture2D( planeTexture, vTextureCoord - vec2( 0.02, .05 )  * delta + c * (uVelocity * .05)).r;
+        	float c2 = texture2D( planeTexture, vTextureCoord + c * (uVelocity * .125)).g;
+        	float c3 = texture2D( planeTexture, vTextureCoord + vec2( 0.02, .05 ) * delta + c * (uVelocity * .2)).b;
 	
           // red and blue version
           //float c1 = texture2D( planeTexture, vTextureCoord - vec2( 0.02, .05 )  * delta + c * (uVelocity * .1)).r;
@@ -129,7 +124,6 @@ window.addEventListener("load", () => {
   const mouse = new Vec2();
   const lastMouse = mouse.clone();
   const velocity = new Vec2();
-  let curtainsBBox = curtains.getBoundingRect();
 
   const params = {
     vertexShader: vs,
@@ -164,11 +158,6 @@ window.addEventListener("load", () => {
         type: "2f",
         value: [curtainsBBox.width, curtainsBBox.height],
       },
-      uVelo: {
-        name: "uVelo",
-        type: "1f",
-        value: 0,
-      },
       uVelocity: {
         name: "uVelocity",
         type: "2f",
@@ -184,6 +173,27 @@ window.addEventListener("load", () => {
     handlePlanes(i);
   }
 
+  function makePlaneFullscreenSize(plane) {
+    const newScale = new Vec2();
+    const newTranslation = new Vec3();
+    const planeBBox = plane.getBoundingRect();
+    plane.setTransformOrigin(newTranslation);
+
+    let scaleX = curtainsBBox.width / planeBBox.width
+    let scaleY = curtainsBBox.height / planeBBox.height
+    let minScale = Math.min(scaleY, scaleX)
+    let translationX = -1 * planeBBox.left / curtains.pixelRatio
+    let translationY = -1 * planeBBox.top / curtains.pixelRatio
+
+    // plane scale
+    newScale.set(minScale, minScale);
+    plane.setScale(newScale);
+
+    // plane translation
+    newTranslation.set(translationX, translationY, 0);
+    plane.setRelativeTranslation(newTranslation);
+  }
+
   // handle all the planes
   function handlePlanes(index) {
     const plane = planes[index];
@@ -197,8 +207,7 @@ window.addEventListener("load", () => {
     }).onRender(() => {
       // update the uniform
       plane.uniforms.planeDeformation.value = planesDeformations;
-      plane.uniforms.delta.value = chromaDelta / 20;
-      plane.uniforms.uVelo.value = chromaDelta;
+      plane.uniforms.delta.value = chromaDelta;
       plane.uniforms.uMouse.value = plane.mouseToPlaneCoords(mouse)
       plane.uniforms.uVelocity.value = velocity
       plane.uniforms.resolution.value = [plane.getBoundingRect().width, plane.getBoundingRect().height]
@@ -219,27 +228,10 @@ window.addEventListener("load", () => {
     galleryState.planeIndex = index
     galleryState.plane = plane
 
-    const newScale = new Vec2();
-    const newTranslation = new Vec3();
-    const planeBBox = plane.getBoundingRect();
-    plane.setTransformOrigin(newTranslation);
+    makePlaneFullscreenSize(plane)
 
-    let scaleX = curtainsBBox.width / planeBBox.width
-    let scaleY = curtainsBBox.height / planeBBox.height
-    let minScale = Math.min(scaleY, scaleX)
-    let translationX = -1 * planeBBox.left / curtains.pixelRatio
-    let translationY = -1 * planeBBox.top / curtains.pixelRatio
-
-    // plane scale
-    newScale.set(minScale, minScale);
-    plane.setScale(newScale);
-
-    // plane translation
-    newTranslation.set(translationX, translationY, 0);
-    plane.setRelativeTranslation(newTranslation);
-
-    document.getElementById('everything').style.visibility = 'hidden'
-    document.getElementById('galleryContent').style.display = ''
+    if (!document.body.classList.contains('is-fullscreen'))
+      document.body.classList.toggle('is-fullscreen')
 
     for (const otherplane of planes) {
       if (otherplane.uuid != plane.uuid)
@@ -256,8 +248,8 @@ window.addEventListener("load", () => {
       }
       plane.visible = true
     }
-    document.getElementById('everything').style.visibility = ''
-    document.getElementById('galleryContent').style.display = 'none'
+    if (document.body.classList.contains('is-fullscreen'))
+      document.body.classList.toggle('is-fullscreen')
   }
 
   function setGalleryIndex(newIndex) {
