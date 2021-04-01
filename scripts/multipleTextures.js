@@ -1,176 +1,32 @@
+var removePlanes, addPlanes
+
 window.addEventListener("load", () => {
   // set up our WebGL context and append the canvas to our wrapper
   const curtains = new Curtains({
     container: "canvas",
     pixelRatio: Math.min(1.5, window.devicePixelRatio) // limit pixel ratio for performance
   });
-  let curtainsBBox = curtains.getBoundingRect();
-  let gallery
 
-  function limit(input, min, max) {
-    return Math.min(Math.max(input, min), max)
+  // get our plane element
+  const planeElements = document.getElementsByClassName("multi-textures");
+  let planeElement = planeElements[0]
+
+  console.log(planeElement.querySelectorAll("img"));
+  let gallery = new GLSLgallery(curtains, planeElement.querySelectorAll("img"))
+
+  addPlanes = () => {
+    planeElement = planeElements[1]
+    gallery = new GLSLgallery(curtains, planeElement.querySelectorAll("img"))
   }
 
-  curtains.onRender(() => {
-    chromaDelta = curtains.lerp(chromaDelta, 0, .04);
-    velocity.x = curtains.lerp(velocity.x, 0, 0.02)
-    velocity.y = curtains.lerp(velocity.y, 0, 0.02)
-  }).onScroll(() => {
-    // get scroll deltas to apply the effect on scroll
-    const delta = curtains.getScrollDeltas();
-    chromaDelta = curtains.lerp(chromaDelta, limit(delta.y, -10, 10) / 10, 0.05);
-  }).onError(() => {
-    // we will add a class to the document body to display original images
-    document.body.classList.add("no-curtains", "planes-loaded");
-  }).onContextLost(() => {
-    // on context lost, try to restore the context
-    curtains.restoreContext();
-  }).onAfterResize(() => {
-    curtainsBBox = curtains.getBoundingRect();
-  });
-
-  // we will keep track of all our planes in an array
-  const planes = [];
-  let chromaDelta = 0;
-  let planeElements = document.getElementsByClassName("plane");
-
-  //fragment shader
-  const fs = `
-      precision mediump float;
-  
-      varying vec3 vVertexPosition;
-      varying vec2 vTextureCoord;
-
-      uniform float uScrollDelta;
-      uniform sampler2D planeTexture;
-  
-      uniform vec2 uResolution;
-      uniform vec2 uMouse;
-      uniform vec2 uVelocity;
-      
-      
-      float circle(vec2 vUv, vec2 disc_center, float disc_radius, float border_size) {
-        vec2 uv = vUv;
-        uv -= disc_center/2.;
-        uv *= uResolution;
-        float dist = sqrt(dot(uv, uv));
-        return smoothstep(disc_radius+border_size, disc_radius-border_size, dist);
-      }
-
-      void main() {
-          float c = circle(vTextureCoord, uMouse+1., .1, .25);
-          
-        	float c1 = texture2D( planeTexture, vTextureCoord - vec2( 0.02, .05 ) * uScrollDelta - c * (uVelocity * .05)).r;
-        	float c2 = texture2D( planeTexture, vTextureCoord ).g;
-          float c3 = texture2D( planeTexture, vTextureCoord + vec2( 0.02, .05 ) * uScrollDelta + c * (uVelocity * .05)).b;
-          // for a red and blue version make green and blue offset the same
-
-        	gl_FragColor = vec4( c1, c2, c3, 1.);
-      }
-  `;
-  // all planes will have the same parameters
-
-  const mouse = new Vec2();
-  const lastMouse = mouse.clone();
-  const velocity = new Vec2();
-
-  const params = {
-    fragmentShader: fs,
-    uniforms: {
-      delta: {
-        name: "uScrollDelta",
-        type: "1f",
-        value: 1,
-      },
-      uMouse: {
-        name: "uMouse",
-        type: "2f",
-        value: mouse,
-      },
-      resolution: {
-        name: "uResolution",
-        type: "2f",
-        value: [curtainsBBox.width, curtainsBBox.height],
-      },
-      uVelocity: {
-        name: "uVelocity",
-        type: "2f",
-        value: velocity,
-      },
-    }
-  };
-
-  // add our planes and handle them
-  for (let i = 0; i < planeElements.length; i++) {
-    planes.push(new Plane(curtains, planeElements[i], params));
-    handlePlanes(i);
+  removePlanes = () => {
+    gallery.close()
   }
-
-  // handle all the planes
-  function handlePlanes(index) {
-    const plane = planes[index];
-
-    // check if our plane is defined and use it
-    plane.onReady(() => {
-      // once everything is ready, display everything
-      if (index === planes.length - 1) {
-        document.body.classList.add("planes-loaded");
-      }
-      plane.uniforms.resolution.value = [plane.getBoundingRect().width / plane.getBoundingRect().height, 1]
-    }).onRender(() => {
-      // update the uniform
-      plane.uniforms.delta.value = chromaDelta;
-      plane.uniforms.uMouse.value = plane.mouseToPlaneCoords(mouse)
-      plane.uniforms.uVelocity.value = velocity
-    })
-
-    //enter gallery view when clicked
-    plane.htmlElement.addEventListener("click", (e) => {
-      e.stopPropagation();
-      enterGallery(index)
-    });
-  }
-
-  function enterGallery(index) {
-    if (gallery)
-      console.log('gallery already oopen');
-    else {
-      //add all the images from the hero section to gallery
-      const images = document.getElementById('galleryContent').getElementsByTagName('img')
-      gallery = new GLSLgallery(curtains, images)
-    }
-  }
-
-
-  document.getElementsByClassName('closeButton')[0].addEventListener("click", () => {
-    if (gallery) {
-      gallery.close()
-      gallery = undefined
-    }
-    console.log(gallery);
-  });
-
-  // mouse/touch move
-  function onMouseMove(e) {
-    // velocity is our mouse position minus our mouse last position
-    lastMouse.copy(mouse);
-
-    // touch event
-    if (e.targetTouches)
-      mouse.set(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
-    else
-      mouse.set(e.clientX, e.clientY);
-
-
-    let targetVelocity = [(mouse.x - lastMouse.x) / 16, (mouse.y - lastMouse.y) / 16];
-
-    velocity.x = curtains.lerp(velocity.x, targetVelocity[0], 0.1)
-    velocity.y = curtains.lerp(velocity.y, targetVelocity[1], 0.1)
-  }
-
-  window.addEventListener("mousemove", onMouseMove);
-  window.addEventListener("touchmove", onMouseMove);
 });
+
+
+
+
 
 
 class GLSLgallery {
@@ -427,6 +283,7 @@ class GLSLgallery {
         this.state.nextTextureIndex = 1;
       }
       // apply it to our next texture
+      console.log(this.plane.images[this.state.nextTextureIndex]);
       this.state.nextTex.setSource(this.plane.images[this.state.nextTextureIndex]);
 
       this._calcContainSize()
@@ -455,7 +312,7 @@ class GLSLgallery {
     document.body.classList.remove('is-fullscreen')
     document.removeEventListener('keydown', this.boundKeyHandler)
     this.htmlElement.removeEventListener('click', this.boundClickHandler)
-    while (this.htmlElement.children.length > 2) { //only leave the displacement texture
+    while (this.htmlElement.children.length > 1) { //only leave the displacement texture
       this.htmlElement.removeChild(this.htmlElement.lastChild);
     }
     for (const plane of this.curtains.planes) {

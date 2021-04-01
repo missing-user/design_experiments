@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- Metas -->
+  <title>Multiple textures example</title>
+  <meta name="description" content="A WebGL infinite slideshow with a displacement fragment shader using curtains.js">
+  <link rel="canonical" href="https://www.curtainsjs.com/examples/multiple-textures/index.html">
+
+</head>
+
+<body>
+  <style>
+    @media screen {
+
+      /*** layout ***/
+
+      /*** canvas ***/
+
+      #canvas {
+        height: 100vh;
+        width: 100vw;
+
+        z-index: -10;
+        position: fixed;
+        top: 0;
+      }
+
+      .multi-textures,
+      #galleryImage {
+        width: 100%;
+        height: 1000px;
+        cursor: pointer;
+
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+      }
+
+      .multi-textures img {
+        display: none;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+    }
+  </style>
+  <div id="page-wrap">
+
+    <div id="canvas"></div>
+
+    <div class="flex-wrapper multi-textures">
+      <img src="./images/portrait_7.webp" crossorigin="" />
+      <img src="./images/portrait_1.webp" crossorigin="" />
+      <img src="./images/portrait_2.webp" crossorigin="" />
+      <img src="./images/portrait_4.webp" crossorigin="" />
+      <img src="./images/portrait_6.webp" crossorigin="" />
+    </div>
+    <div class="flex-wrapper multi-textures">
+      <img src="./images/portrait_4.webp" crossorigin="" />
+      <img src="./images/portrait_6.webp" crossorigin="" />
+    </div>
+    <div id="galleryImage" class="multi-textures">
+      <!-- notice here we are using the data-sampler attribute to name our displacement sampler uniform -->
+
+      <img src="./images/noise.jpg" crossorigin="" data-sampler="displacement" />
+    </div>
+
+    <button onclick="removePlanes()">remove</button>
+    <button onclick="addPlanes()">add</button>
+  </div>
+
+  <script src="./scripts/curtains.umd.min.js"></script>
+  <script src="./scripts/multipleTextures.js"></script>
+
+</body>
+
+</html>

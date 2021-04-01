@@ -19,7 +19,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-right: auto;
   mix-blend-mode: exclusion;
   font-weight: 100;
-  font-family: 'Libre Barcode 39 Text', sans-serif;
+  font-family: 'Libre Barcode 39 Text', monospace;
 }
 
 h1 {
@@ -42,8 +42,19 @@ p {
   line-height: 1.5em;
 }
 
+/* svg icons can be inlined with links */
+
+[class^="icon"] {
+  width: 5rem;
+  height: 5rem;
+  position: relative;
+  margin-right: 1rem;
+}
+
 a {
   transition: color var(--animd), background-color var(--animd);
+  align-items: center;
+  align-content: center;
 }
 
 a:link, a:visited {
@@ -52,7 +63,6 @@ a:link, a:visited {
 
 a:hover, a:focus, a:active {
   background-color: white;
-  background-repeat: no-repeat;
   color: black;
   outline-offset: .25rem;
 }
@@ -82,7 +92,6 @@ body {
 
 img {
   width: 100%;
-  object-fit: cover;
 }
 
 .heroSection {
@@ -92,6 +101,21 @@ img {
 .contentSection {
   padding: 12rem 2rem;
   position: relative;
+}
+
+/* a bunch of horizontally spaced links with icons (e.g. header or social) */
+
+.linkBar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.linkBar a {
+  padding-bottom: 1.8rem;
+}
+
+.linkBar .icon {
+  margin-bottom: -1.8rem;
 }
 
 /* Animations */
@@ -199,9 +223,10 @@ body.is-fullscreen {
 
 body.is-fullscreen #canvas {
   z-index: 20;
+  background-color: black;
 }
 
-#galleryContent {
+#galleryImage {
   display: none;
   position: fixed;
   top: 0;
@@ -209,12 +234,28 @@ body.is-fullscreen #canvas {
   right: 0;
   left: 0;
   padding: 2rem;
-  background: black;
-  /*backdrop-filter: blur(6px);*/
-  text-align: right;
-  z-index: 10;
+  z-index: 99;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 }
 
-body.is-fullscreen #galleryContent {
+#galleryImage .closeButton {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  width: 6rem;
+  height: 6rem;
+  color: white;
+}
+
+.multi-textures img {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+body.is-fullscreen #galleryImage {
   display: inherit;
 }
