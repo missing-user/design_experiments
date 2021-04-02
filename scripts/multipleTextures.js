@@ -9,14 +9,11 @@ window.addEventListener("load", () => {
 
   // get our plane element
   const planeElements = document.getElementsByClassName("multi-textures");
-  let planeElement = planeElements[0]
 
-  console.log(planeElement.querySelectorAll("img"));
-  let gallery = new GLSLgallery(curtains, planeElement.querySelectorAll("img"))
+  let gallery = new GLSLgallery(curtains, planeElements[1].querySelectorAll("img"))
 
   addPlanes = () => {
-    planeElement = planeElements[1]
-    gallery = new GLSLgallery(curtains, planeElement.querySelectorAll("img"))
+    gallery = new GLSLgallery(curtains, planeElements[2].querySelectorAll("img"))
   }
 
   removePlanes = () => {
@@ -30,7 +27,7 @@ window.addEventListener("load", () => {
 
 
 class GLSLgallery {
-  constructor(curtains, imageNodes) {
+  constructor(curtains, asyncImgElements) {
     this.curtains = curtains
     this.htmlElement = document.getElementById('galleryImage')
     document.body.classList.add('is-fullscreen')
@@ -39,21 +36,14 @@ class GLSLgallery {
       plane.visible = false
     }
 
-    console.log(imageNodes);
-    if (imageNodes != undefined)
-      for (const node of imageNodes) {
-        let cloned = node.cloneNode(true)
-        this.htmlElement.appendChild(cloned)
-      }
-
-
     this.bbox = this.curtains.getBoundingRect();
     this.state = {
       activeTextureIndex: 1,
       nextTextureIndex: 2, // does not care for now
-      maxTextures: this.htmlElement.getElementsByTagName('img').length - 1,
+      maxTextures: 1,
       isChanging: false,
-      transitionTimer: 0,
+      transitionStart: Date.now(),
+      transitionTime: 0,
       prevScale: { x: 1, y: 1 },
       newScale: { x: 1, y: 1 }
     }
@@ -95,9 +85,9 @@ class GLSLgallery {
             vActiveTextureCoord = (activeTexMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;
             vNextTextureCoord = (nextTexMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;
 
-            vActiveTextureCoord = .5+(vActiveTextureCoord-.5)*uScaleActive;
+            vActiveTextureCoord = .5+(vActiveTextureCoord-.5)*uScaleActive*1.25;
             
-            vNextTextureCoord = .5+(vNextTextureCoord-.5)*uScaleNext;
+            vNextTextureCoord = .5+(vNextTextureCoord-.5)*uScaleNext*1.25;
 
             vVertexPosition = aVertexPosition;
         }
@@ -185,7 +175,8 @@ class GLSLgallery {
 
     curtains.disableDrawing();
 
-    this.plane = new Plane(curtains, document.getElementById('galleryImage'), params);
+    this.plane = new Plane(curtains, this.htmlElement, params);
+    this.loadImages(asyncImgElements)
 
     this.plane.onReady(() => {
       // the idea here is to create two additionnal textures
@@ -213,15 +204,13 @@ class GLSLgallery {
     }).onRender(() => {
       // increase or decrease our timer based on the active texture value
       if (this.state.isChanging) {
-        // use damping to smoothen transition
-        this.state.transitionTimer += 0.03;
-        this.state.transitionTimer = Math.min(this.state.transitionTimer, 1)
+        this.state.transitionTime = Math.min(1, (Date.now() - this.state.transitionStart) / 2500)
         //if the images have different aspect ratios, transition in size
-        let scaleTimer = this.cubicEase(this.state.transitionTimer)
+        let scaleTimer = this.cubicEase(this.state.transitionTime)
         let psx = this.state.prevScale.x, nsx = this.state.newScale.x
         let curScalex = psx * (1 - scaleTimer) + nsx * scaleTimer
         this.plane.scale.x = curScalex
-        if (this.state.newScale.x / this.state.prevScale.x > 1) {
+        if (nsx / psx > 1) {
           // it's getting wider
           this.plane.uniforms.scaleActive.value = [curScalex / psx, curScalex / psx]
           this.plane.uniforms.scaleNext.value = [1, 1]
@@ -230,15 +219,14 @@ class GLSLgallery {
           this.plane.uniforms.scaleActive.value = [1, 1]
           this.plane.uniforms.scaleNext.value = [curScalex / nsx, curScalex / nsx]
         }
-
+        // update our transition timer uniform
+        this.plane.uniforms.transitionTimer.value = this.state.transitionTime;
       }
-
-      // update our transition timer uniform
-      this.plane.uniforms.transitionTimer.value = this.state.transitionTimer;
     }).onAfterResize(() => {
       this.bbox = this.curtains.getBoundingRect();
       this._calcContainSize()
       this.plane.scale.x = this.state.newScale.x //imediately set, no animation
+      this.curtains.needRender();
     });
 
     this.boundKeyHandler = this.keyHandler.bind(this)
@@ -273,6 +261,9 @@ class GLSLgallery {
       this.curtains.enableDrawing();
 
       this.state.isChanging = true;
+      this.state.transitionStart = Date.now();
+
+
 
       // check what will be next image
       if (newIndex < 1) {
@@ -283,7 +274,8 @@ class GLSLgallery {
         this.state.nextTextureIndex = 1;
       }
       // apply it to our next texture
-      console.log(this.plane.images[this.state.nextTextureIndex]);
+      //TODO: why doesn't setting the texture work?
+      //this.state.nextTex = this.plane.textures[this.state.nextTextureIndex]
       this.state.nextTex.setSource(this.plane.images[this.state.nextTextureIndex]);
 
       this._calcContainSize()
@@ -297,12 +289,12 @@ class GLSLgallery {
         // our next texture becomes our active texture
         this.state.activeTex.setSource(this.plane.images[this.state.activeTextureIndex]);
         // reset timer
-        this.state.transitionTimer = 0;
+        this.state.transitionStart = Date.now();
         //reset the transition scaling
         this.plane.uniforms.scaleActive.value = [1, 1]
         this.plane.uniforms.scaleNext.value = [1, 1]
 
-      }, 250); // add a bit of margin to the timer
+      }, 3200); // add a bit of margin to the timer
     }
   }
 
@@ -312,9 +304,6 @@ class GLSLgallery {
     document.body.classList.remove('is-fullscreen')
     document.removeEventListener('keydown', this.boundKeyHandler)
     this.htmlElement.removeEventListener('click', this.boundClickHandler)
-    while (this.htmlElement.children.length > 1) { //only leave the displacement texture
-      this.htmlElement.removeChild(this.htmlElement.lastChild);
-    }
     for (const plane of this.curtains.planes) {
       plane.visible = true
     }
@@ -335,5 +324,30 @@ class GLSLgallery {
       return 4 * x * x * x;
     }
     return 1 - (-2 * x + 2) * (-2 * x + 2) * (-2 * x + 2) / 2;
+  }
+
+  loadImages(asyncImgElements) {
+    let imagesLoaded = 0;
+    const imagesToLoad = asyncImgElements.length;
+
+    // load the images
+    this.plane.loadImages(asyncImgElements, {
+      // textures options
+      // improve texture rendering on small screens with LINEAR_MIPMAP_NEAREST minFilter
+      minFilter: this.curtains.gl.LINEAR_MIPMAP_NEAREST
+    });
+
+    this.plane.onLoading(() => {
+      imagesLoaded++;
+      this.state.maxTextures = imagesLoaded - 1
+      console.log('loaded images', this.state.maxTextures, '+ displacement Texture');
+      if (imagesLoaded === imagesToLoad) {
+        // everything is ready, we need to render at least one frame
+        this.curtains.needRender();
+
+        // if window has been resized between plane creation and image loading, we need to trigger a resize
+        this.plane.resize();
+      }
+    });
   }
 }

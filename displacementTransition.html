@@ -53,6 +53,11 @@
 
     <div id="canvas"></div>
 
+    <div id="galleryImage" class="multi-textures">
+      <!-- notice here we are using the data-sampler attribute to name our displacement sampler uniform -->
+
+      <img src="./images/noise.jpg" crossorigin="" data-sampler="displacement" />
+    </div>
     <div class="flex-wrapper multi-textures">
       <img src="./images/portrait_7.webp" crossorigin="" />
       <img src="./images/portrait_1.webp" crossorigin="" />
@@ -63,11 +68,6 @@
     <div class="flex-wrapper multi-textures">
       <img src="./images/portrait_4.webp" crossorigin="" />
       <img src="./images/portrait_6.webp" crossorigin="" />
-    </div>
-    <div id="galleryImage" class="multi-textures">
-      <!-- notice here we are using the data-sampler attribute to name our displacement sampler uniform -->
-
-      <img src="./images/noise.jpg" crossorigin="" data-sampler="displacement" />
     </div>
 
     <button onclick="removePlanes()">remove</button>
