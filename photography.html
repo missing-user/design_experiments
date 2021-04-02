@@ -19,26 +19,26 @@
   <div id="canvas"></div>
 
   <section class="heroSection">
-    <h1 class="fadein delay1">Richtig geile <br> Bilder</h1>
+    <h1 class="fadein delay1 stickyTitle">Richtig geile <br> Bilder</h1>
     <div class="row">
       <div class="column">
-        <div class="plane"><img crossorigin="anonymous" class="fadein delay3" src="images/portrait_7.webp" alt=""
-            data-sampler="planeTexture"></div>
         <div class="plane"><img crossorigin="anonymous" class="fadein delay4" src="images/portrait_4.webp" alt=""
             data-sampler="planeTexture"></div>
-      </div>
-
-      <div class="column">
-        <div class="plane"><img crossorigin="anonymous" class="fadein delay4" src="images/portrait_1.webp" alt=""
-            data-sampler="planeTexture"></div>
-        <div class="plane"><img crossorigin="anonymous" class="fadein delay3" src="images/portrait_3.webp" alt=""
-            data-sampler="planeTexture"></div>
-      </div>
-
-      <div class="column">
         <div class="plane"><img crossorigin="anonymous" class="fadein delay4" src="images/portrait_2.webp" alt=""
             data-sampler="planeTexture"></div>
-        <div class="plane" gallery-images="./images/portrait_7.webp ./images/portrait_1.webp ./images/portrait_2.webp">
+        <div class="plane"><img crossorigin="anonymous" class="fadein delay3" src="images/portrait_7.webp" alt=""
+            data-sampler="planeTexture"></div>
+      </div>
+
+      <div class="column">
+        <div class="emptyImage"></div>
+        <div class="plane"><img crossorigin="anonymous" class="fadein delay4" src="images/portrait_1.webp" alt=""
+            data-sampler="planeTexture"></div>
+        <div class="plane" gallery-images="./images/portrait_3.webp ./images/portrait_2.webp">
+          <img crossorigin="anonymous" class="fadein delay3" src="images/portrait_3.webp" alt=""
+            data-sampler="planeTexture">
+        </div>
+        <div class="plane" gallery-images="./images/portrait_6.webp ./images/portrait_7.webp">
           <img crossorigin="anonymous" class="fadein delay3" src="images/portrait_6.webp" alt=""
             data-sampler="planeTexture">
         </div>
@@ -110,11 +110,11 @@
           <option selected>Ich will auch so geile Fotos!</option>
           <option>Ich bin Influencer, habt ihr was für micht?</option>
           <option>Ich mag eure Webseite!</option>
-          <option>Ich will was anderes</option>
+          <option>Ich will was anderes...</option>
         </select>
       </div>
       <div class="message">
-        <label for="message" data-text="Persönliche Nachricht">Persönliche Nachricht</label>
+        <label for="message">Persönliche Nachricht</label>
         <textarea name="message" placeholder="Ich will ein Kind von euch!" id="message_input" cols="30" rows="8"
           required></textarea>
       </div>

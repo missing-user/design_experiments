@@ -26,6 +26,10 @@ input[type='text'], [type='email'], select, textarea {
   transition: all var(--animd);
 }
 
+select {
+  background-color: black;
+}
+
 input[type='text']:focus, [type='email']:focus, textarea:focus {
   padding: 0 0 0.875rem 0;
 }
@@ -52,7 +56,6 @@ form>div {
   background: none;
   border: solid 1px white;
   color: white;
-  font-weight: bold;
   outline: none;
   padding: 1rem 2rem;
   -webkit-transition: color var(--animd), background-color var(--animd);
@@ -62,6 +65,7 @@ form>div {
 #form_button:hover, #form_button:focus {
   background-color: white;
   color: black;
+  font-weight: bold;
 }
 
 #form_button:focus {

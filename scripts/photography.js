@@ -354,10 +354,9 @@ class GLSLgallery {
         fromTexture: this.plane.textures[this.state.nextTextureIndex]
       });
 
-
       this.boundClickHandler = this.nextSlide.bind(this)
       this.htmlElement.addEventListener("click", this.boundClickHandler);
-
+      this.plane.resize()
     }).onRender(() => {
       // increase or decrease our timer based on the active texture value
       if (this.state.isChanging) {

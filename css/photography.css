@@ -17,16 +17,12 @@ h1, h2, h3, h4, h5, h6 {
   width: fit-content;
   margin-left: auto;
   margin-right: auto;
-  mix-blend-mode: exclusion;
   font-weight: 100;
   font-family: 'Libre Barcode 39 Text', monospace;
 }
 
 h1 {
-  position: sticky;
-  top: 30%;
   font-size: 12rem;
-  z-index: 5;
 }
 
 h2 {
@@ -40,6 +36,13 @@ h3 {
 p {
   text-align: center;
   line-height: 1.5em;
+}
+
+.stickyTitle {
+  position: sticky;
+  top: 30%;
+  z-index: 5;
+  mix-blend-mode: exclusion;
 }
 
 /* svg icons can be inlined with links */
@@ -85,28 +88,27 @@ body {
   flex-wrap: wrap;
 }
 
-/* Create four equal columns that sits next to each other */
-
 .column {
-  flex: calc(100%/3);
-  max-width: calc(100%/3);
+  flex: 50%;
+  max-width: 50%;
 }
 
-/* Responsive layout - makes a two column-layout instead of four columns */
-
-@media (max-width: 1800px) {
-  .column {
-    flex: 50%;
-    max-width: 50%;
-  }
+.column div {
+  margin-bottom: 55rem;
 }
 
 /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
 
-@media (max-width : 768px) {
+@media (max-width: 768px) {
   .column {
     flex: 100%;
     max-width: 100%;
+  }
+  .column div {
+    margin-bottom: 20rem;
+  }
+  .emptyImage {
+    display: none;
   }
 }
 
@@ -116,6 +118,8 @@ img {
 
 .heroSection {
   margin-bottom: 10rem;
+  max-width: 100rem;
+  margin: 0 auto;
 }
 
 .contentSection {
