@@ -57,16 +57,21 @@ window.addEventListener("load", () => {
         return smoothstep(disc_radius+border_size, disc_radius-border_size, dist);
       }
 
-      void main() {
+      vec2 warpedCoordinates(float warpAmmount, float c){
+        return vTextureCoord + warpAmmount*(vec2( 0.02, .05 ) * uScrollDelta + c * (uVelocity * .05));
+      }
+
+      void main() {						
           float c = circle(vTextureCoord, uMouse+1., .1, .25);
           
-        	float c1 = texture2D( planeTexture, vTextureCoord - vec2( 0.02, .05 ) * uScrollDelta - c * (uVelocity * .05)).r;
-        	float c2 = texture2D( planeTexture, vTextureCoord ).g;
-          float c3 = texture2D( planeTexture, vTextureCoord + vec2( 0.02, .05 ) * uScrollDelta + c * (uVelocity * .05)).b;
+        	float c1 = texture2D( planeTexture, warpedCoordinates(1., c)).r;
+        	float c2 = texture2D( planeTexture, vTextureCoord).g;
+          float c3 = texture2D( planeTexture, warpedCoordinates(-1., c)).b;
           // for a red and blue version make green and blue offset the same
 
         	gl_FragColor = vec4( c1, c2, c3, 1.);
-      }
+          //gl_FragColor = sample;
+        }
   `;
   // all planes will have the same parameters
 
@@ -127,27 +132,24 @@ window.addEventListener("load", () => {
     //enter gallery view when clicked
     plane.htmlElement.addEventListener("click", (e) => {
       e.stopPropagation();
-      enterGallery(index)
+      enterGallery(plane.htmlElement)
     });
   }
 
-  function enterGallery(index) {
+  function enterGallery(htmlElement) {
     if (gallery)
       console.log('gallery already oopen');
-    else {
-      //add all the images from the hero section to gallery
-      const images = document.getElementById('galleryContent').getElementsByTagName('img')
-      gallery = new GLSLgallery(curtains, images)
-    }
+    else
+      gallery = new GLSLgallery(curtains, htmlElement.getAttribute('gallery-images'))
   }
 
 
   document.getElementsByClassName('closeButton')[0].addEventListener("click", () => {
+    console.log('gallery clsing:', gallery);
     if (gallery) {
       gallery.close()
       gallery = undefined
     }
-    console.log(gallery);
   });
 
   // mouse/touch move
@@ -174,6 +176,8 @@ window.addEventListener("load", () => {
 
 
 class GLSLgallery {
+  // Gallery either takes a list of img elements to load the data from or
+  // a string containing all the image paths
   constructor(curtains, asyncImgElements) {
     this.curtains = curtains
     this.htmlElement = document.getElementById('galleryImage')
@@ -183,12 +187,15 @@ class GLSLgallery {
       plane.visible = false
     }
 
+    //append image sources passed as img elements to the gallery
+    if (typeof asyncImgElements === 'string')
+      this._loadFromString(asyncImgElements)
 
     this.bbox = this.curtains.getBoundingRect();
     this.state = {
       activeTextureIndex: 1,
       nextTextureIndex: 2, // does not care for now
-      maxTextures: 1,
+      maxTextures: this.htmlElement.querySelectorAll('img').length - 1,
       isChanging: false,
       transitionStart: Date.now(),
       transitionTime: 0,
@@ -323,8 +330,10 @@ class GLSLgallery {
 
     curtains.disableDrawing();
 
-    this.plane = new Plane(curtains, document.getElementById('galleryImage'), params);
-    this.loadImages(asyncImgElements)
+    //create the plane (automatically loads containing img element sources)
+    this.plane = new Plane(curtains, this.htmlElement, params);
+    if (Symbol.iterator in Object(asyncImgElements) && ! typeof asyncImgElements === 'string')
+      this.loadImages(asyncImgElements)
 
     this.plane.onReady(() => {
       // the idea here is to create two additionnal textures
@@ -383,6 +392,21 @@ class GLSLgallery {
     document.addEventListener('keydown', this.boundKeyHandler);
   }
 
+  _loadFromString(dataString) {
+    function htmlToElement(html) {
+      var template = document.createElement('template');
+      template.innerHTML = html;
+      return template.content.firstChild;
+    }
+
+    const imagePaths = dataString.split(' ')
+    console.log('loading from string', imagePaths);
+    for (const path of imagePaths) {
+      const htmlNode = htmlToElement(`<img src="${path}#" crossorigin="anonymous" />`)
+      this.htmlElement.appendChild(htmlNode)
+    }
+  }
+
   keyHandler(args) {
     switch (args.key) {
       case 'ArrowRight':
@@ -427,7 +451,6 @@ class GLSLgallery {
       this._calcContainSize()
       setTimeout(() => {
         // disable drawing now that the transition is over
-
         this.curtains.disableDrawing();
 
         this.state.isChanging = false;
@@ -440,7 +463,7 @@ class GLSLgallery {
         this.plane.uniforms.scaleActive.value = [1, 1]
         this.plane.uniforms.scaleNext.value = [1, 1]
 
-      }, 250); // add a bit of margin to the timer
+      }, 320); // add a bit of margin to the timer
     }
   }
 
@@ -450,6 +473,11 @@ class GLSLgallery {
     document.body.classList.remove('is-fullscreen')
     document.removeEventListener('keydown', this.boundKeyHandler)
     this.htmlElement.removeEventListener('click', this.boundClickHandler)
+    //remove all children except for the displacement texture and close button
+    while (this.htmlElement.childElementCount > 2) {
+      this.htmlElement.removeChild(this.htmlElement.lastChild)
+    }
+
     for (const plane of this.curtains.planes) {
       plane.visible = true
     }
@@ -472,27 +500,19 @@ class GLSLgallery {
     return 1 - (-2 * x + 2) * (-2 * x + 2) * (-2 * x + 2) / 2;
   }
 
+  //takes a list of img elements and loads them into fullscreen gallery
   loadImages(asyncImgElements) {
-    let imagesLoaded = 0;
+    this.state.maxTextures--; //don't double count the displacement texture
     const imagesToLoad = asyncImgElements.length;
+    console.log('loading from img elements', asyncImgElements);
 
     // load the images
-    this.plane.loadImages(asyncImgElements, {
-      // textures options
-      // improve texture rendering on small screens with LINEAR_MIPMAP_NEAREST minFilter
-      minFilter: this.curtains.gl.LINEAR_MIPMAP_NEAREST
-    });
+    this.plane.loadImages(asyncImgElements);
 
     this.plane.onLoading(() => {
-      imagesLoaded++;
-      this.state.maxTextures = imagesLoaded - 1
-      console.log('loaded images', this.state.maxTextures, '+ displacement Texture');
-      if (imagesLoaded === imagesToLoad) {
-        // everything is ready, we need to render at least one frame
-        this.curtains.needRender();
-
-        // if window has been resized between plane creation and image loading, we need to trigger a resize
-        this.plane.resize();
+      this.state.maxTextures++;
+      if (this.state.maxTextures === imagesToLoad) {
+        this.setIndex(1)
       }
     });
   }

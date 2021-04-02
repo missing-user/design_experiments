@@ -21,52 +21,27 @@
   <section class="heroSection">
     <h1 class="fadein delay1">Richtig geile <br> Bilder</h1>
     <div class="row">
-      <div class="column plane">
-        <!-- crossorigin must be enabled to prevent double texture loading -->
-        <img crossorigin="anonymous" class="fadein delay2" src="images/portrait_2.webp" alt=""
-          data-sampler="planeTexture">
-      </div>
       <div class="column">
+        <div class="plane"><img crossorigin="anonymous" class="fadein delay3" src="images/portrait_7.webp" alt=""
+            data-sampler="planeTexture"></div>
+        <div class="plane"><img crossorigin="anonymous" class="fadein delay4" src="images/portrait_4.webp" alt=""
+            data-sampler="planeTexture"></div>
       </div>
-    </div>
 
-    <div class="row">
       <div class="column">
+        <div class="plane"><img crossorigin="anonymous" class="fadein delay4" src="images/portrait_1.webp" alt=""
+            data-sampler="planeTexture"></div>
+        <div class="plane"><img crossorigin="anonymous" class="fadein delay3" src="images/portrait_3.webp" alt=""
+            data-sampler="planeTexture"></div>
       </div>
-      <div class="column plane">
-        <img crossorigin="anonymous" class="fadein delay3" src="images/portrait_3.webp" alt=""
-          data-sampler="planeTexture">
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="column plane">
-        <img crossorigin="anonymous" class="fadein delay4" src="images/portrait_1.webp" alt=""
-          data-sampler="planeTexture">
-      </div>
       <div class="column">
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="column">
-      </div>
-      <div class="column plane">
-        <img crossorigin="anonymous" class="fadein delay5" src="images/portrait_4.webp" alt=""
-          data-sampler="planeTexture">
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="column plane">
-        <img crossorigin="anonymous" class="fadein delay5" src="images/portrait_6.webp" alt=""
-          data-sampler="planeTexture">
-      </div>
-    </div>
-    <div class="row">
-      <div class="column plane">
-        <img crossorigin="anonymous" class="fadein delay5" src="images/portrait_7.webp" alt=""
-          data-sampler="planeTexture">
+        <div class="plane"><img crossorigin="anonymous" class="fadein delay4" src="images/portrait_2.webp" alt=""
+            data-sampler="planeTexture"></div>
+        <div class="plane" gallery-images="./images/portrait_7.webp ./images/portrait_1.webp ./images/portrait_2.webp">
+          <img crossorigin="anonymous" class="fadein delay3" src="images/portrait_6.webp" alt=""
+            data-sampler="planeTexture">
+        </div>
       </div>
     </div>
   </section>
@@ -149,20 +124,12 @@
     </form><!-- // End form -->
   </section>
 
-  <div id="galleryContent" class="multi-textures">
-    <img src="./images/portrait_7.webp#" crossorigin="" />
-    <img src="./images/portrait_1.webp#" crossorigin="" />
-    <img src="./images/portrait_2.webp#" crossorigin="" />
-    <img src="./images/portrait_3.webp#" crossorigin="" />
-    <img src="./images/portrait_4.webp#" crossorigin="" />
-    <img src="./images/portrait_6.webp#" crossorigin="" />
-  </div>
-
   <div id="galleryImage" class="multi-textures">
     <button class="closeButton">X</button>
     <!-- notice here we are using the data-sampler attribute to name our displacement sampler uniform -->
     <img src="./images/noise.jpg" crossorigin="anonymous" data-sampler="displacement" />
   </div>
+
 </body>
 <script src="./scripts/curtains.umd.min.js"></script>
 <script src="./scripts/photography.js"></script>
