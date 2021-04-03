@@ -8,29 +8,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
   <title>Fancy</title>
   <style>
-    html,
     body {
       margin: 0;
-      font-family: 'Reenie Beanie', cursive;
-      font-size: 150%;
-      background-color: #fff9ca;
-      color: #5300d9;
+      font-size: 2.5rem;
+      font-style: italic;
       text-align: center;
+      background: yellow;
+      font-family: 'Montserrat', sans-serif;
     }
 
+
     a {
-      color: #f73c03;
+      color: #ff1f8f;
+    }
+
+    a:hover {
+      text-shadow:
+        .2rem .2rem #000;
+    }
+
+    .profilePicture {
+      border-radius: 50%;
+      width: 25rem;
+      height: 25rem;
     }
 
     h1 {
+      font-family: 'Reenie Beanie', cursive;
       color: white;
       z-index: 100;
-      margin: 0;
-      top: 5rem;
+      top: 5%;
       position: absolute;
+      font-size: 5rem;
       width: 100%;
+    }
+
+
+    h2 {
+      font-size: 8rem;
+      font-weight: 900;
+
+      -webkit-text-fill-color: transparent;
+      -webkit-text-stroke-width: 3px;
+      -webkit-text-stroke-color: white;
+      text-shadow:
+        .3rem .3rem #ff1f8f,
+        1rem 1rem #000000;
+      margin-right: 2rem;
     }
 
     #heroCont {
@@ -54,7 +81,39 @@
     }
 
     .cta {
-      height: calc(var(--vh, 1vh) * 100);
+      min-height: calc(var(--vh, 1vh) * 100);
+      padding: 2rem;
+      max-width: 65rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta section {
+      margin-bottom: 20rem;
+    }
+
+    @media (max-width: 2600px) {
+      :root {
+        font-size: 125%;
+      }
+    }
+
+    @media (max-width: 1370px) {
+      :root {
+        font-size: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      :root {
+        font-size: 70%;
+      }
+    }
+
+    @media (min-width: 2600px) {
+      :root {
+        font-size: 150%;
+      }
     }
   </style>
 </head>
@@ -67,35 +126,44 @@
     </div>
   </div>
   <div class="cta">
-    <div style="height: 2rem;"></div>
-    <h2>Cool animation, isn't it?</h2>
-    <p>If you want me to do one for you, hit me up at <a href="./">animation@master.com</a> or on social media</p>
-    <div>
-      <a href="./"> <svg width="100" height="65" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7ZM9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12Z"
-            fill="currentColor" />
-          <path
-            d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z"
-            fill="currentColor" />
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M5 1C2.79086 1 1 2.79086 1 5V19C1 21.2091 2.79086 23 5 23H19C21.2091 23 23 21.2091 23 19V5C23 2.79086 21.2091 1 19 1H5ZM19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
-            fill="currentColor" />
-
-        </svg></a>
-      <a href="./"> <svg width="100" height="65" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M8 3C9.10457 3 10 3.89543 10 5V8H16C17.1046 8 18 8.89543 18 10C18 11.1046 17.1046 12 16 12H10V14C10 15.6569 11.3431 17 13 17H16C17.1046 17 18 17.8954 18 19C18 20.1046 17.1046 21 16 21H13C9.13401 21 6 17.866 6 14V5C6 3.89543 6.89543 3 8 3Z"
-            fill="currentColor" />
-        </svg></a>
-      <a href="./">
-        <svg width="100" height="65" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path opacity="0.5"
-            d="M21 10C21 13.3137 18.3137 16 15 16C11.6863 16 9 13.3137 9 10C9 6.68629 11.6863 4 15 4C18.3137 4 21 6.68629 21 10Z"
-            fill="currentColor" />
-          <path d="M3 4H7V20H3V4Z" fill="currentColor" />
-        </svg></a>
-    </div>
+    <section>
+      <h2>About Me</h2>
+      <img class="profilePicture" src="frames/ezgif-frame-006_min.jpg" alt="Profile Picture">
+      <p>I'm a creative and talented Animator with experience in creating engaging animations for
+        clients from different niches, including TV projects, branding work and animated marketing assets. </p>
+    </section>
+    <section>
+      <h2>Get in Touch</h2>
+      <p>If you want me to animate something for you, hit me up at <a href="./">animation@master.com</a> or on social
+        media!</p>
+      <div>
+        <a href="./">
+          <svg width="100" height="65" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7ZM9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12Z"
+              fill="currentColor" />
+            <path
+              d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z"
+              fill="currentColor" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M5 1C2.79086 1 1 2.79086 1 5V19C1 21.2091 2.79086 23 5 23H19C21.2091 23 23 21.2091 23 19V5C23 2.79086 21.2091 1 19 1H5ZM19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+              fill="currentColor" />
+          </svg></a>
+        <a href="./">
+          <svg width="100" height="65" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M8 3C9.10457 3 10 3.89543 10 5V8H16C17.1046 8 18 8.89543 18 10C18 11.1046 17.1046 12 16 12H10V14C10 15.6569 11.3431 17 13 17H16C17.1046 17 18 17.8954 18 19C18 20.1046 17.1046 21 16 21H13C9.13401 21 6 17.866 6 14V5C6 3.89543 6.89543 3 8 3Z"
+              fill="currentColor" />
+          </svg></a>
+        <a href="./">
+          <svg width="100" height="65" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path opacity="0.5"
+              d="M21 10C21 13.3137 18.3137 16 15 16C11.6863 16 9 13.3137 9 10C9 6.68629 11.6863 4 15 4C18.3137 4 21 6.68629 21 10Z"
+              fill="currentColor" />
+            <path d="M3 4H7V20H3V4Z" fill="currentColor" />
+          </svg></a>
+    </section>
+  </div>
   </div>
 </body>
 
@@ -112,14 +180,18 @@
   const animCont = document.getElementById("heroCont");
   const canvas = document.getElementById("heroCanv");
   const context = canvas.getContext("2d");
-
+  let frameStep = 1;
   const frameCount = 65;
   const currentFrame = index => (
     //  const frameCount = 148;
     // `https://www.apple.com/105/media/us/airpods-pro/2019/1299e2f5_9206_4470_b28e_08307a42f19b/anim/sequence/large/01-hero-lightpass/${index.toString().padStart(4, '0')}.jpg`
     `https://jurasic-park.de/design_experiments/frames/ezgif-frame-${index.toString().padStart(3, '0')}_min.jpg`
   )
+  if ('connection' in navigator)
+    if (navigator.connection.saveData) {
+      frameStep = 5;
 
+    }
   const preloadImages = () => {
     for (let i = 1; i < frameCount; i++) {
       const img = new Image();
@@ -147,7 +219,7 @@
     if (scrollFraction < 1) {
       const frameIndex = Math.min(
         frameCount - 1,
-        Math.ceil(scrollFraction * frameCount)
+        Math.ceil(scrollFraction * frameCount / frameStep) * frameStep
       );
 
       requestAnimationFrame(() => updateImage(frameIndex + 1))
