@@ -235,6 +235,7 @@ img {
 
 .plane img {
   cursor: pointer;
+  touch-action: pan-y;
 }
 
 .planes-loaded .plane img {
