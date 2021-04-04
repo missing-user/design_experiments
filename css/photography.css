@@ -129,6 +129,10 @@ img {
   margin: 0 auto;
 }
 
+footer.contentSection {
+  padding-bottom: 2rem;
+}
+
 /* a bunch of horizontally spaced links with icons (e.g. header or social) */
 
 .linkBar {

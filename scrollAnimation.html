@@ -8,8 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
-  <title>Fancy</title>
+  <title>Animation Portfolio</title>
   <style>
     body {
       margin: 0;
@@ -20,20 +19,34 @@
       font-family: 'Montserrat', sans-serif;
     }
 
-
     a {
       color: #ff1f8f;
     }
 
     a:hover {
-      text-shadow:
-        .2rem .2rem #000;
+      text-shadow: .2rem .2rem #000;
+    }
+
+    a:hover svg {
+      -webkit-filter: drop-shadow(.2rem .2rem #000);
+      filter: drop-shadow(.2rem .2rem #000);
+    }
+
+    svg {
+      width: 5rem;
+      height: 5rem;
     }
 
     .profilePicture {
       border-radius: 50%;
       width: 25rem;
       height: 25rem;
+    }
+
+    .profilePicture:hover {
+      -webkit-filter: drop-shadow(.2rem .2rem #000);
+      filter: drop-shadow(.6rem .6rem #000);
+      transform: translate(-.3rem, -.3rem);
     }
 
     h1 {
@@ -58,6 +71,15 @@
         .3rem .3rem #ff1f8f,
         1rem 1rem #000000;
       margin-right: 2rem;
+    }
+
+    h2:hover {
+      -webkit-text-fill-color: white;
+    }
+
+    .linkBar {
+      display: flex;
+      justify-content: space-evenly;
     }
 
     #heroCont {
@@ -136,7 +158,7 @@
       <h2>Get in Touch</h2>
       <p>If you want me to animate something for you, hit me up at <a href="./">animation@master.com</a> or on social
         media!</p>
-      <div>
+      <div class="linkBar">
         <a href="./">
           <svg width="100" height="65" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -163,8 +185,10 @@
             <path d="M3 4H7V20H3V4Z" fill="currentColor" />
           </svg></a>
     </section>
+
+    <footer><a href="/legal-notice">Legal Notice</a></footer>
   </div>
-  </div>
+
 </body>
 
 <script>
