@@ -113,6 +113,8 @@ body {
 }
 
 img {
+  /*pseudo DRM, can't right click images*/
+  pointer-events: none;
   width: 100%;
 }
 
@@ -221,6 +223,13 @@ footer.contentSection {
   }
 }
 
+@media print {
+  body {
+    /*pseudo DRM*/
+    display: none;
+  }
+}
+
 /* curtainjs specific styling */
 
 #canvas {
@@ -237,8 +246,11 @@ footer.contentSection {
   opacity: 1;
 }
 
-.plane img {
+.plane {
   cursor: pointer;
+}
+
+.plane img {
   touch-action: pan-y;
 }
 
