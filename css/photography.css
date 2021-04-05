@@ -248,9 +248,6 @@ footer.contentSection {
 
 .plane {
   cursor: pointer;
-}
-
-.plane img {
   touch-action: pan-y;
 }
 
