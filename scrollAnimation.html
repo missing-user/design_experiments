@@ -248,7 +248,7 @@
 
       requestAnimationFrame(() => updateImage(frameIndex + 1))
     }
-  });
+  }, { passive: true });
 
   preloadImages()
 </script>

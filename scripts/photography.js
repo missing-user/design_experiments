@@ -156,12 +156,7 @@ window.addEventListener("load", () => {
   function onPointerMove(e) {
     // velocity is our mouse position minus our mouse last position
     lastMouse.copy(mouse);
-
-    // touch event
-    if (e.targetTouches)
-      mouse.set(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
-    else
-      mouse.set(e.clientX, e.clientY);
+    mouse.set(e.clientX, e.clientY);
 
     let strength = (!e.pressure ? 1 : e.pressure) / 16 //react to touch pressure when available
     let targetVelocity = [(mouse.x - lastMouse.x) * strength, (mouse.y - lastMouse.y) * strength];
@@ -170,7 +165,7 @@ window.addEventListener("load", () => {
     velocity.y = curtains.lerp(velocity.y, targetVelocity[1], 0.1)
   }
 
-  window.addEventListener("pointermove", onPointerMove);
+  window.addEventListener("pointermove", onPointerMove, { passive: true });
 });
 
 
