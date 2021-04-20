@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orelega+One&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <style>
+    body {
+      background-color: #ffefcd;
+      font-size: 150%;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Orelega One', cursive;
+      filter: url('#wavy');
+    }
+  </style>
+  <h1 class="wavy">Dithered style</h1>
+  <img src="images/dithered-image.png" alt="">
+  <p>I've been seeing these dithered images on websites quite a lot recently and thought I'd give them a shot.</p>
+  <svg width="100%" height="100%" style="display:none;">
+    <defs>
+      <filter id="wavy" filterUnits="userSpaceOnUse" x="0" y="0">
+        <feTurbulence id="wave-animation" numOctaves="1" seed="1" baseFrequency="0 0.0645034">
+        </feTurbulence>
+        <feDisplacementMap scale="10" in="SourceGraphic"></feDisplacementMap>
+      </filter>
+      <animate xlink:href="#wave-animation" attributeName="baseFrequency" dur="3s" keyTimes="0;0.5;1"
+        values="0.0 0.04;0.0 0.07;0.0 0.04" repeatCount="indefinite"></animate>
+    </defs>
+  </svg>
+
+</body>
+
+</html>
