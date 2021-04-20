@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wavy effects</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orelega+One&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <style>
+    body {
+      background-color: #ffefcd;
+      font-size: 150%;
+      font-family: monospace;
+      max-width: 800px;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Orelega One', cursive;
+      filter: url('#wavy');
+    }
+
+    hr {
+      background-color: black;
+      border-style: double;
+    }
+
+    a:link {
+      text-decoration: underline;
+    }
+
+    a:hover {
+      filter: url('#wavy');
+    }
+  </style>
+  <h1 class="wavy">Dithered style</h1>
+  <img src="images/dithered-image.png" alt="">
+  <p>I've been seeing these dithered images on websites quite a lot recently and thought I'd give them a shot.
+    <br><br>
+    One amazing example is <a href="https://solar.lowtechmagazine.com/">Low Tech Magazine</a>
+  </p>
+  <hr>
+  <h2>Wavy text</h2>
+  <p>By now you've probably noticed the wavy headings. They're made using SVG filters with a displacement map.
+    Surprisingly, the performance is quite good and the technique is supported by all major browsers!</p>
+  <svg width="100%" height="100%" style="display:none;">
+    <defs>
+
+      <filter id="wavy" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
+        <feTurbulence type="turbulence" baseFrequency="0.003 0.01" numOctaves="2" seed="16" stitchTiles="stitch"
+          result="turbulence" />
+        <feOffset id="wave-animation" dx="0" dy="110" x="0%" y="0%" width="100%" height="100%" in="turbulence"
+          result="offset" />
+        <feDisplacementMap in="SourceGraphic" in2="offset" scale="25" xChannelSelector="G" yChannelSelector="A"
+          result="displacementMap" />
+        <animate xlink:href="#wave-animation" attributeName="dx" dur="20s" keyTimes="0;0.5;1" values="0.0; 1220; 0.0"
+          repeatCount="indefinite"></animate>
+      </filter>
+    </defs>
+  </svg>
+
+</body>
+
+</html>
