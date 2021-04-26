@@ -1,0 +1,99 @@
+:root {
+  --perspectiveShiftY: -.4rem;
+  --perspectiveShiftX: -.4rem;
+  --fgColor: rgb(255, 255, 255);
+  --bgColor: rgb(0, 0, 0);
+}
+
+body {
+  font-family: 'Arvo', serif;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+p {
+  line-height: 2.2rem;
+}
+
+.popart {
+  position: relative;
+  display: inline-block;
+  color: #fff;
+  transition: font-size var(--transitionParams);
+  font-size: 5rem;
+}
+
+.mainSection {
+  padding: 1rem;
+}
+
+.popart::after, .popart::before {
+  pointer-events: none;
+  content: attr(text-content);
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-shadow: none;
+  color: #000;
+  transition: transform 100ms linear;
+}
+
+.popart::after {
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke-color: #000;
+  transform: translate(calc(.5*var(--perspectiveShiftX)), calc(.5*var(--perspectiveShiftY)));
+}
+
+.popart::before {
+  transform: translate(calc(-1*var(--perspectiveShiftX)), calc(-1*var(--perspectiveShiftY)));
+  z-index: -1;
+}
+
+.miniHeader {
+  position: fixed;
+  visibility: hidden;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.miniHeader .popart {
+  font-size: 2.7rem;
+  margin-top: .5rem;
+  visibility: visible;
+}
+
+pre {
+  overflow-x: scroll;
+}
+
+@media (max-width: 768px) {
+  :root {
+    font-size: 75%;
+  }
+}
+
+@media (min-width: 768px) {
+  .portfolioGallery {
+    grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    font-size: 125%;
+  }
+}
+
+@media (min-width: 1820px) {
+  :root {
+    font-size: 150%;
+  }
+}
+
+@media (min-width: 2600px) {
+  :root {
+    font-size: 200%;
+  }
+}

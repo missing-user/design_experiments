@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wavy effects</title>
+  <title>SVG effects</title>
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Orelega+One&display=swap" rel="stylesheet">
 </head>
@@ -14,9 +14,11 @@
   <style>
     body {
       background-color: #ffefcd;
-      font-size: 150%;
+      font-size: 200%;
       font-family: monospace;
-      max-width: 800px;
+      max-width: 1000px;
+      padding: 1rem;
+      margin: auto;
     }
 
     h1,
@@ -29,45 +31,110 @@
       filter: url('#wavy');
     }
 
+
+    img {
+      filter: url('#duotone');
+      width: 100%;
+      aspect-ratio: 1.5;
+      object-fit: cover;
+    }
+
+    img:hover {
+      filter: none;
+    }
+
     hr {
       background-color: black;
       border-style: double;
     }
-
-    a:link {
-      text-decoration: underline;
-    }
-
-    a:hover {
-      filter: url('#wavy');
-    }
   </style>
-  <h1 class="wavy">Dithered style</h1>
-  <img src="images/dithered-image.png" alt="">
-  <p>I've been seeing these dithered images on websites quite a lot recently and thought I'd give them a shot.
-    <br><br>
-    One amazing example is <a href="https://solar.lowtechmagazine.com/">Low Tech Magazine</a>
+  <h1 class="wavy">Retro</h1>
+  <p>I've been seeing the use of SVG filters quite a lot recently and thought I'd give them a shot. The headings have
+    some funky scroll effects and images a dual tone filter.
   </p>
-  <hr>
-  <h2>Wavy text</h2>
-  <p>By now you've probably noticed the wavy headings. They're made using SVG filters with a displacement map.
-    Surprisingly, the performance is quite good and the technique is supported by all major browsers!</p>
-  <svg width="100%" height="100%" style="display:none;">
-    <defs>
 
+  <img src="images/portrait_2.webp" alt="">
+  <hr>
+  <h2>It moves!</h2>
+  <h3>And this one does too</h3>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, vero officia molestiae dolor quo recusandae deserunt
+    odio qui quae! Quas aut vitae iure quo exercitationem! Magni facilis impedit atque necessitatibus! Lorem, ipsum
+    dolor sit amet consectetur adipisicing elit.</p>
+
+  <img src="images/pexels-photo-4622237.jpeg" alt="">
+  <p> Molestias doloribus itaque suscipit minima corporis ipsa cumque
+    voluptatem temporibus excepturi. Impedit, rem vero repellendus quia laboriosam harum enim autem natus nesciunt!
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid facere ratione incidunt ipsam possimus odio magnam
+    non, cumque tenetur omnis quis neque sequi accusamus rem exercitationem, provident dolores laborum dolore. Lorem
+    ipsum dolor sit amet consectetur adipisicing elit. Mollitia iste iure, assumenda reprehenderit nesciunt error itaque
+    doloribus veniam rerum! Veniam non minus error officia dolorem iusto aspernatur ipsa reprehenderit iure.</p>
+  <h2 style="filter: url('#rgbsplit');color: #ffffff;font-size: 7rem;">Bonus effect</h2>
+  <svg width="100%" height="100%">
+    <defs>
       <filter id="wavy" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
-        <feTurbulence type="turbulence" baseFrequency="0.003 0.01" numOctaves="2" seed="16" stitchTiles="stitch"
-          result="turbulence" />
-        <feOffset id="wave-animation" dx="0" dy="110" x="0%" y="0%" width="100%" height="100%" in="turbulence"
-          result="offset" />
-        <feDisplacementMap in="SourceGraphic" in2="offset" scale="25" xChannelSelector="G" yChannelSelector="A"
-          result="displacementMap" />
-        <animate xlink:href="#wave-animation" attributeName="dx" dur="20s" keyTimes="0;0.5;1" values="0.0; 1220; 0.0"
-          repeatCount="indefinite"></animate>
+        <feTurbulence type="fractalNoise" baseFrequency="0.01 0.07" numOctaves="5" seed="2" result="noise">
+        </feTurbulence>
+        <feDisplacementMap id="wavyScale" in="SourceGraphic" in2="warp" scale="0" xChannelSelector="R"
+          yChannelSelector="B">
+        </feDisplacementMap>
       </filter>
     </defs>
   </svg>
 
+  <svg width="100%" height="100%">
+    <defs>
+      <filter id="rgbsplit">
+        <feOffset id="redShift" result="redOut" in="SourceGraphic" dx="-1" dy="-1" />
+        <feColorMatrix result="redOut" in="redOut" type="matrix" values="1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0" />
+        <feOffset id="blueShift" result="blueOut" in="SourceGraphic" dx="1" dy="1" />
+        <feColorMatrix result="blueOut" in="blueOut" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0" />
+        <feColorMatrix result="greenOut" in="SourceGraphic" type="matrix" values="0 0 0 0 0
+           0 1 0 0 0
+            0 0 0 0 0
+             0 0 0 1 0" />
+        <feBlend in="redOut" in2="blueOut" result="shifty" mode="screen" />
+        <feBlend in="greenOut" in2="shifty" mode="screen" />
+      </filter>
+    </defs>
+
+  </svg>
+  <svg width="100%" height="100%">
+    <filter id="duotone">
+      <feColorMatrix type="matrix" values=".5 .5 .5 0 0
+                .5 .5 .5 0 0
+                .5 .5 .5 0 0
+                0 0 0 1 0">
+      </feColorMatrix>
+      <feComponentTransfer color-interpolation-filters="sRGB">
+        <feFuncR type="table" tableValues=".16078431  1.0"></feFuncR>
+        <feFuncG type="table" tableValues=".125490196  0.9372549"></feFuncG>
+        <feFuncB type="table" tableValues=".552941176  0.8039216"></feFuncB>
+      </feComponentTransfer>
+    </filter>
+  </svg>
+
 </body>
+<script>
+  window.onmousemove = (e) => {
+    var x = (e.clientX / window.innerWidth - .5) * 15;
+    var y = (e.clientY / window.innerHeight - .5) * 15;
+    document.getElementById("redShift").setAttribute('dx', x);
+    document.getElementById("redShift").setAttribute('dy', y);
+    document.getElementById("blueShift").setAttribute('dx', -x);
+    document.getElementById("blueShift").setAttribute('dy', -y);
+  }
+  var distortionScale = 0;
+
+  window.onscroll = (e) => {
+    distortionScale += 4;
+  }
+
+  function animate(t) {
+    distortionScale -= distortionScale / 15
+    document.getElementById("wavyScale").setAttribute('scale', distortionScale);
+    requestAnimationFrame(animate)
+  }
+  requestAnimationFrame(animate)
+</script>
 
 </html>

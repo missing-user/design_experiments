@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/popartTitle.css">
+  <link rel="stylesheet" href="css/heroSection.css">
+</head>
+
+<body>
+  <section class="hero">
+    <img src="images/pexels-photo-4622237.jpeg" alt="">
+    <div class="heroContent" id="logoHeader">
+      <h1 class="popart">Watch
+        <br>This
+      </h1>
+    </div>
+  </section>
+  <section class="mainSection">
+    <h2>How it works</h2>
+    <p>The demo uses before and after elements for the drop shadow effect, since CSS text shadows are quite slow to
+      animate. The JS snippet finds all elements with the <code>popart</code> class and sets the custom
+      <code>text-content</code> attribute,
+      that get's read in the css using
+      <code>attr(text-content);</code>. This way, the before and after elements both have the same text as our heading.
+      Now we just have to set the transform properties on our before and after element on mousemove and we're done!
+      <br><br>
+      If you like this design, why dont you check out some of my other <a href="/design_experiments">design
+        experiments</a>
+    </p>
+  </section>
+</body>
+<script src="scripts/popart.js"></script>
+
+</html>
