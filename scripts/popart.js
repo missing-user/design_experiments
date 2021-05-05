@@ -22,15 +22,6 @@ document.addEventListener("mousemove", perspectiveShift, { passive: true });
 document.addEventListener("touchmove", perspectiveShift, { passive: true });
 document.addEventListener("touchstart", perspectiveShift, { passive: true });
 
-var logoHeader = document.getElementById("logoHeader");
-window.onscroll = scaleTitle;
-
-function scaleTitle() {
-  if (document.documentElement.scrollTop > logoHeader.offsetTop + logoHeader.offsetHeight / 2 - 55)
-    logoHeader.firstElementChild.classList.add('miniHeader')
-  else
-    logoHeader.firstElementChild.classList.remove('miniHeader')
-}
 
 //Tilt reactive on mobile
 if ('DeviceOrientationEvent' in window) {
