@@ -83,6 +83,7 @@ body {
 }
 
 .row {
+  padding-top: 20rem;
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -125,7 +126,7 @@ img {
 }
 
 .contentSection {
-  padding: 12rem 2rem;
+  padding: 22rem 2rem;
   position: relative;
   max-width: 100rem;
   margin: 0 auto;
