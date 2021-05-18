@@ -30,9 +30,37 @@
   right: 0;
   border-radius: .5rem;
   margin: .5rem;
+  pointer-events: none;
 }
 
 .heroContent {
   position: absolute;
   z-index: 5;
+}
+
+.hero .arrow {
+  position: absolute;
+  bottom: 20px;
+  border: solid 3px var(--fgColor);
+  height: 30px;
+  width: 30px;
+  border-radius: 2px;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+  animation: fade_move_down 1.8s ease-in-out infinite;
+}
+
+@keyframes fade_move_down {
+  0% {
+    transform: translateY(-35px) rotate(45deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0px) rotate(45deg);
+    opacity: 0;
+  }
 }
