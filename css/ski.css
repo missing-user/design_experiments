@@ -1,0 +1,129 @@
+body {
+  font-family: 'Lato', sans-serif;
+  margin: 8px;
+}
+
+h1 {
+  font-family: 'Staatliches', cursive;
+  font-weight: 300;
+  font-size: 11rem;
+  line-height: .95em;
+}
+
+h2 {
+  font-family: 'Staatliches', cursive;
+  font-weight: 300;
+  font-size: 2rem;
+  margin-bottom: .5rem;
+}
+
+p {
+  margin-top: .5rem;
+  margin-bottom: 2rem;
+}
+
+.hero {
+  position: relative;
+  margin: 10vh -8px 15vh;
+}
+
+.hero h1 {
+  margin: 0;
+}
+
+.image-label {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  opacity: .35;
+}
+
+img {
+  width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.hero .hero-image-cont {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  z-index: -1;
+  right: 0;
+  width: 80%;
+  height: 100%;
+  text-align: right;
+}
+
+.hero-image-cont picture {
+  position: relative;
+}
+
+.top-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin: 2rem auto;
+}
+
+.top-nav a {
+  font-size: 2rem;
+  line-height: 1em;
+  color: black;
+  text-decoration: none;
+  font-family: 'Staatliches', cursive;
+  font-weight: 300;
+}
+
+.top-nav a:hover, .top-nav a:focus, .top-nav a:active {
+  background-color: black;
+  color: white;
+  padding: 0 2px;
+}
+
+hr {
+  margin-block: 4em;
+  border-style: solid;
+}
+
+.main-content {}
+
+@media (max-width: 768px) {
+  :root {
+    font-size: 75%;
+  }
+}
+
+@media (min-width: 768px) {}
+
+@media (min-width: 1280px) {
+  :root {
+    font-size: 125%;
+  }
+  .main-content {
+    margin-left: 20%;
+  }
+  .hero-image-cont img {
+    height: 33rem;
+    width: unset;
+  }
+  .hero {
+    margin: 10vh 0 8em;
+  }
+  body {
+    margin: 0 5%;
+  }
+}
+
+@media (min-width: 1820px) {
+  :root {
+    font-size: 150%;
+  }
+}
+
+@media (min-width: 2600px) {
+  :root {
+    font-size: 170%;
+  }
+}
