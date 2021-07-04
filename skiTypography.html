@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Dynamic Ski company</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
 
   <div class="hero">
     <div class="hero-image-cont">
-      <picture>
+      <picture data-rellax-speed="-1" data-rellax-desktop-speed="-2" class="rellax">
         <img
           srcset="./images/pexels-pixabay-47356.jpg 1800w, ./images/pexels-pixabay-47356.jpg 1280w,./images/pexels-pixabay-47356.jpg 640w,"
           src="./images/pexels-pixabay-47356-small.jpg"
@@ -30,8 +30,17 @@
         <span class="image-label">Photo from Pixabay at Pexels.com </span>
       </picture>
     </div>
+    <!--
 
-    <h1>Get<br>Out<br>There</h1>
+      
+
+    <h1 data-rellax-speed="2" data-rellax-desktop-speed="3" class="rellax">Get</h1>
+    <h1 data-rellax-speed="1" data-rellax-desktop-speed="2" class="rellax">Out</h1>
+    <h1 data-rellax-speed="0" data-rellax-desktop-speed="1" class="rellax">There</h1>
+    -->
+
+
+    <h1 data-rellax-speed="1" data-rellax-desktop-speed="2" class="rellax">Get<br>Out<br>There</h1>
   </div>
 
   <section class="main-content">
@@ -49,7 +58,21 @@
     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. A nobis nemo dolorem mollitia, tenetur repudiandae
       autem voluptas odit natus! Necessitatibus accusantium odit quasi aliquid a officia officiis pariatur aliquam quas?
     </p>
+    <div style="height: 8rem;"></div>
+
+    <h2>Who we are</h2>
+    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. A nobis nemo dolorem mollitia, tenetur repudiandae
+      autem voluptas odit natus! Necessitatibus accusantium odit quasi aliquid a officia officiis pariatur aliquam quas?
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore, fugit itaque qui earum velit repudiandae quis
+      omnis optio laboriosam nobis ducimus, minima enim eaque repellat amet molestias, soluta consequatur tempora? Lorem
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maxime delectus eum porro excepturi. Beatae officiis
+      ipsa vitae sed tenetur debitis nostrum nam. Aliquam, ipsum provident voluptatem eveniet labore facere suscipit!
+    </p>
   </section>
 </body>
+<script src="scripts/rellax.min.js"></script>
+<script>
+  var rellax = new Rellax('.rellax');
+</script>
 
 </html>
