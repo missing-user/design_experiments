@@ -29,14 +29,20 @@
   </svg>
 
   <script>
-    window.onmousemove = (e) => {
+    document.addEventListener("touchmove", pointermove, false);
+    document.addEventListener("mousemove", pointermove, false);
+
+    function pointermove(e) {
+      if (e.touches)
+        e = e.touches[0]
       var x = (e.clientX / window.innerWidth - .5) * 15;
       var y = (e.clientY / window.innerHeight - .5) * 15;
       document.getElementById("redShift").setAttribute('dx', x);
       document.getElementById("redShift").setAttribute('dy', y);
       document.getElementById("blueShift").setAttribute('dx', -x);
       document.getElementById("blueShift").setAttribute('dy', -y);
-    }</script>
+    }
+  </script>
 </body>
 
 
