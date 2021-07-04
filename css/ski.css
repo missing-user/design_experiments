@@ -120,10 +120,16 @@ hr {
   :root {
     font-size: 150%;
   }
+  body {
+    margin: 0 15%;
+  }
 }
 
 @media (min-width: 2600px) {
   :root {
     font-size: 170%;
+  }
+  body {
+    margin: 0 20%;
   }
 }
