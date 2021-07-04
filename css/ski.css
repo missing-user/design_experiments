@@ -84,7 +84,7 @@ img {
 
 hr {
   margin-block: 4em;
-  border-style: solid;
+  border-top: 1px solid black;
 }
 
 .main-content {}
