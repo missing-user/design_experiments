@@ -26,12 +26,11 @@
   </section>
   <section class="mainSection">
     <h2>How it works</h2>
-    <p>The demo uses before and after elements for the drop shadow effect, since CSS text shadows are quite slow to
-      animate. The JS snippet finds all elements with the <code>popart</code> class and sets the custom
-      <code>text-content</code> attribute,
-      that get's read in the css using
-      <code>attr(text-content);</code>. This way, the before and after elements both have the same text as our heading.
-      Now we just have to set the transform properties on our before and after element on mousemove and we're done!
+    <p>The demo uses :before and :after elements to create a fake drop shadow, since CSS text shadows are quite slow to
+      animate. A simple JS snippet then finds all elements with the <code>.popart</code> class and sets the custom
+      <code>text-content</code> attribute, so that the Pseudo Elements can copy the heading text. That get's read in CSS
+      using <code>attr(text-content);</code>
+      Now we just have to set their transform properties on mousemove and we're done!
       <br><br>
       If you like this design, why dont you check out some of my other <a href="/design_experiments">design
         experiments</a>

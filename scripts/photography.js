@@ -5,7 +5,7 @@ window.addEventListener("load", () => {
     pixelRatio: Math.min(1.5, window.devicePixelRatio) // limit pixel ratio for performance
   });
   let curtainsBBox = curtains.getBoundingRect();
-  let gallery
+  let gallery;
 
   function limit(input, min, max) {
     return Math.min(Math.max(input, min), max)
