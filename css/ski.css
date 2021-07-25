@@ -30,7 +30,6 @@ p {
 .hero h1 {
   margin: 0;
   color: #ba1829;
-  mix-blend-mode: exclusion;
 }
 
 .image-label {
@@ -64,9 +63,15 @@ img {
 
 .top-nav {
   display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.navLinkCont {
+  display: flex;
   flex-direction: column;
   align-items: flex-end;
-  margin: 2rem auto;
+  margin: 2rem 0;
 }
 
 .top-nav a {
@@ -78,10 +83,21 @@ img {
   font-weight: 300;
 }
 
-.top-nav a:hover, .top-nav a:focus, .top-nav a:active {
+.top-nav a.active {
   background-color: black;
   color: white;
-  padding: 0 2px;
+  outline: solid black;
+}
+
+.navLinkCont:hover a {
+  background: none;
+  color: black;
+}
+
+.top-nav a:hover, .top-nav a:hover, .top-nav a:focus, .top-nav a:active {
+  background-color: black;
+  color: white;
+  outline: solid black;
 }
 
 hr {
