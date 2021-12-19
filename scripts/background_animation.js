@@ -53,6 +53,7 @@ function animate(timestamp) {
       dy += 10 * Math.cos(time
         + Math.sin(smallOffset + xi / smallStretch)
         + Math.cos(time + yi / smallStretch)) //high frequency variation
+
       dy *= (yi / cH + 1) //perspective scale
       let y = yi / 2 + cH / 3 + dy
       x *= (yi / cH + 1)

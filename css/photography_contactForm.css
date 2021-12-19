@@ -14,12 +14,13 @@ button, input, select, textarea {
 }
 
 input[type='text'], [type='email'], select, textarea {
-  background: none;
+  background-color: #000000;
+
   border: none;
-  border-bottom: solid 1px white;
+  border-left: solid 1px white;
   color: white;
   margin: 0 0 1.875rem 0;
-  padding: 0 0 0.875rem 0;
+  padding: 0 0 0.25rem 0.5rem;
   width: 100%;
   box-sizing: border-box;
   -webkit-transition: all var(--animd);
@@ -31,7 +32,7 @@ select {
 }
 
 input[type='text']:focus, [type='email']:focus, textarea:focus {
-  padding: 0 0 0.875rem 0;
+  background-color: #ffffff33;
 }
 
 .subject {
@@ -52,20 +53,22 @@ form>div {
   margin: 2rem 0;
 }
 
-#form_button {
+.form_button {
   background: none;
   border: solid 1px white;
   color: white;
   outline: none;
   padding: 1rem 2rem;
-  -webkit-transition: color var(--animd), background-color var(--animd);
-  transition: color var(--animd), background-color var(--animd);
+  box-shadow: white -.5rem .5rem 0 0;
+  -webkit-transition: color, box-shadow var(--animd), background-color var(--animd);
+  transition: color, box-shadow var(--animd), background-color var(--animd);
 }
 
-#form_button:hover, #form_button:focus {
+.form_button:hover, .form_button:focus {
   background-color: white;
   color: black;
   font-weight: bold;
+  box-shadow: transparent 0 0 0 0;
 }
 
 #form_button:focus {
